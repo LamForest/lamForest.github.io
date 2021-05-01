@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="完美转发 = 引用折叠 + 万能引用 + std::forward, GeT Left">
+    <meta name="keywords" content="XML 与 JSON 在设计目的和应用场景上的区别.md, GeT Left">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>完美转发 = 引用折叠 + 万能引用 + std::forward | GeT Left</title>
+    <title>XML 与 JSON 在设计目的和应用场景上的区别.md | GeT Left</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">完美转发 = 引用折叠 + 万能引用 + std::forward</h1>
+                    <h1 class="description center-align post-title">XML 与 JSON 在设计目的和应用场景上的区别.md</h1>
                 </div>
             </div>
         </div>
@@ -431,20 +431,16 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/C/">
-                                <span class="chip bg-color">C++</span>
+                            <a href="/tags/XML/">
+                                <span class="chip bg-color">XML</span>
                             </a>
                         
-                            <a href="/tags/Template/">
-                                <span class="chip bg-color">Template</span>
+                            <a href="/tags/JSON/">
+                                <span class="chip bg-color">JSON</span>
                             </a>
                         
-                            <a href="/tags/C-STL/">
-                                <span class="chip bg-color">C++ STL</span>
-                            </a>
-                        
-                            <a href="/tags/GNU-C/">
-                                <span class="chip bg-color">GNU C++</span>
+                            <a href="/tags/%E6%B2%A1%E4%BB%80%E4%B9%88%E7%94%A8/">
+                                <span class="chip bg-color">没什么用</span>
                             </a>
                         
                     </div>
@@ -455,8 +451,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/C/" class="post-category">
-                                C++
+                            <a href="/categories/%E7%9E%8E%E6%83%B3/" class="post-category">
+                                瞎想
                             </a>
                         
                     </div>
@@ -468,7 +464,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-29
+                    2021-02-21
                 </div>
                 
 
@@ -482,14 +478,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.8k
+                    983
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    4 分
                 </div>
                 
 
@@ -507,115 +503,104 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>完美转发是一个比较简单，却又比较复杂的东西。</p>
-<p>简单之处在于理解<strong>动机</strong>：C++为什么需要完美转发？</p>
-<p>复杂之处在于理解<strong>原理</strong>：完美转发基于万能引用，引用折叠以及std::forward模板函数。</p>
-<p>本文将会结合GCC源码，详细解读完美转发的动机和原理。</p>
-<h3 id="动机：C-为什么需要完美转发？"><a href="#动机：C-为什么需要完美转发？" class="headerlink" title="动机：C++为什么需要完美转发？"></a>动机：C++为什么需要完美转发？</h3><p>我们从一个简单的例子出发。<br>假设有这么一种情况，用户一般使用testForward函数，testForward什么也不做，只是简单的转调用到print函数。</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
-<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span>T <span class="token operator">&amp;</span> t<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Lvalue ref"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
-<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span>T <span class="token operator">&amp;&amp;</span> t<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Rvalue ref"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
-<span class="token keyword">void</span> <span class="token function">testForward</span><span class="token punctuation">(</span>T <span class="token operator">&amp;&amp;</span> v<span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
-    <span class="token function">print</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//v此时已经是个左值了,永远调用左值版本的print</span>
-    <span class="token function">print</span><span class="token punctuation">(</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//本文的重点</span>
-    <span class="token function">print</span><span class="token punctuation">(</span>std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//永远调用右值版本的print</span>
-
-    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"======================"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span> argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token function">testForward</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//实参为左值</span>
-    <span class="token function">testForward</span><span class="token punctuation">(</span>std<span class="token operator">::</span><span class="token function">move</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//实参为右值</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>上面的程序的运行结果：</p>
-<pre class="line-numbers language-none"><code class="language-none">Lvalue ref
-Lvalue ref
-Rvalue ref
-&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
-Lvalue ref
-Rvalue ref
-Rvalue ref
-&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>用户希望<code>testForward(x);</code>最终调用的是左值版本的print，而<code>testForward(std::move(x));</code>最终调用的是右值版本的print。</p>
-<p><strong>可惜的是，在testForward中，虽然参数v是右值类型的，但此时v在内存中已经有了位置，所以v其实是个左值！</strong></p>
-<p>所以，<code>print(v)</code>永远调用左值版本的print，与用户的本意不符。<code>print(std::move(v));</code>永远调用右值版本的print，与用户的本意也不符。只有<code>print(std::forward&lt;T&gt;(v));</code>才符合用户的本意，这就是本文的主题。</p>
-<p>不难发现，本质问题在于，左值右值在函数调用时，都转化成了左值，使得函数转调用时无法判断左值和右值。</p>
-<p>在STL中，随处可见这种问题。比如C++11引入的<code>emplace_back</code>，它接受左值也接受右值作为参数，接着，它转调用了空间配置器的construct函数，而construct又转调用了<code>placement new</code>，<code>placement new</code>根据参数是左值还是右值，决定调用拷贝构造函数还是移动构造函数。</p>
-<p>这里要保证从<code>emplace_back</code>到<code>placement new</code>，参数的左值和右值属性保持不变。这其实不是一件简单的事情。</p>
-<h3 id="前置知识-引用折叠-万能引用"><a href="#前置知识-引用折叠-万能引用" class="headerlink" title="前置知识 引用折叠 万能引用"></a>前置知识 引用折叠 万能引用</h3><p>C++ Primer 里面写的比较容易理解，在P608（我的是第5版）。<br>略</p>
-<h3 id="原理：完美转发"><a href="#原理：完美转发" class="headerlink" title="原理：完美转发"></a>原理：完美转发</h3><p>std::forward不是独自运作的，在我的理解里，完美转发 = std::forward + 万能引用 + 引用折叠。三者合一才能实现完美转发的效果。</p>
-<p>std::forward的正确运作的前提，是引用折叠机制，为T &amp;&amp;类型的万能引用中的模板参数T赋了一个恰到好处的值。我们用T去指明std::forward<T>的模板参数，从而使得std::forward返回的是正确的类型。</p>
-<p>当然，我们还是先回到一开始的例子。</p>
-<h4 id="testForward-x"><a href="#testForward-x" class="headerlink" title="testForward(x)"></a>testForward(x)</h4><p>回到上面的例子。先考虑<code>testForward(x);</code>这一行代码。</p>
-<h5 id="step-1-实例化testForward"><a href="#step-1-实例化testForward" class="headerlink" title="step 1 实例化testForward"></a>step 1 实例化testForward</h5><p>根据万能引用的实例化规则，实例化的testForward大概长这样：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">T <span class="token operator">=</span> <span class="token keyword">int</span> <span class="token operator">&amp;</span>
-<span class="token keyword">void</span> <span class="token function">testForward</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">&amp;</span> <span class="token operator">&amp;&amp;</span> v<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    <span class="token function">print</span><span class="token punctuation">(</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>又根据引用折叠，上面的等价于下面的代码：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">T <span class="token operator">=</span> <span class="token keyword">int</span> <span class="token operator">&amp;</span>
-<span class="token keyword">void</span> <span class="token function">testForward</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">&amp;</span> v<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    <span class="token function">print</span><span class="token punctuation">(</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span><span class="token keyword">int</span> <span class="token operator">&amp;</span><span class="token operator">></span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>如果你正确的理解了引用折叠，那么这一步是很好理解的。</p>
-<h5 id="step-2-实例化std-forward"><a href="#step-2-实例化std-forward" class="headerlink" title="step 2 实例化std::forward"></a>step 2 实例化std::forward</h5><blockquote>
-<p>注：C++ Primer：forward必须通过显式模板实参来调用，不能依赖函数模板参数推导。</p>
-</blockquote>
-<p>接下来我们来看下<code>std::forward</code>在libstdc++中的实现：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token number">68</span>   <span class="token comment">/**
-69    *  @brief  Forward an lvalue.
-70    *  @return The parameter cast to the specified type.
-71    *
-72    *  This function is used to implement "perfect forwarding".
-73    */</span>
-<span class="token number">74</span>   <span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">_Tp</span><span class="token operator">></span>
-<span class="token number">75</span>     <span class="token keyword">constexpr</span> _Tp<span class="token operator">&amp;&amp;</span>
-<span class="token number">76</span>     <span class="token function">forward</span><span class="token punctuation">(</span><span class="token keyword">typename</span> <span class="token class-name">std</span><span class="token operator">::</span>remove_reference<span class="token operator">&lt;</span>_Tp<span class="token operator">></span><span class="token operator">::</span>type<span class="token operator">&amp;</span> __t<span class="token punctuation">)</span> <span class="token keyword">noexcept</span>
-<span class="token number">77</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token keyword">static_cast</span><span class="token operator">&lt;</span>_Tp<span class="token operator">&amp;&amp;</span><span class="token operator">></span><span class="token punctuation">(</span>__t<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>由于Step1中我们调用<code>std::forward&lt;int &amp;&gt;</code>，所以此处我们代入<code>T = int &amp;</code>，我们有：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">int</span> <span class="token operator">&amp;</span> <span class="token operator">&amp;&amp;</span> <span class="token comment">//折叠</span>
-<span class="token function">forward</span><span class="token punctuation">(</span><span class="token keyword">typename</span> <span class="token class-name">std</span><span class="token operator">::</span>remove_reference<span class="token operator">&lt;</span><span class="token keyword">int</span> <span class="token operator">&amp;</span><span class="token operator">></span><span class="token operator">::</span>type<span class="token operator">&amp;</span> __t<span class="token punctuation">)</span> <span class="token keyword">noexcept</span> <span class="token comment">//remove_reference的作用与名字一致，不过多解释</span>
- <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token keyword">static_cast</span><span class="token operator">&lt;</span><span class="token keyword">int</span> <span class="token operator">&amp;</span> <span class="token operator">&amp;&amp;</span><span class="token operator">></span><span class="token punctuation">(</span>__t<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span> <span class="token comment">//折叠</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>这里又发生了2次引用折叠，所以上面的代码等价于：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">int</span> <span class="token operator">&amp;</span> <span class="token comment">//折叠</span>
-<span class="token function">forward</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">&amp;</span> __t<span class="token punctuation">)</span> <span class="token keyword">noexcept</span> <span class="token comment">//remove_reference的作用与名字一致，不过多解释</span>
- <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token keyword">static_cast</span><span class="token operator">&lt;</span><span class="token keyword">int</span> <span class="token operator">&amp;</span><span class="token operator">></span><span class="token punctuation">(</span>__t<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span> <span class="token comment">//折叠</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>所以最终<code>std::forward&lt;int &amp;&gt;(v)</code>的作用就是将参数强制转型成<code>int &amp;</code>，而<code>int &amp;</code>为左值。所以，调用左值版本的print。</p>
-<h4 id="testForward-std-move-x"><a href="#testForward-std-move-x" class="headerlink" title="testForward(std::move(x))"></a>testForward(std::move(x))</h4><p>接下来，考虑<code>testForward(std::move(x))</code>的情况。</p>
-<h5 id="step-1-实例化testForward-1"><a href="#step-1-实例化testForward-1" class="headerlink" title="step 1 实例化testForward"></a>step 1 实例化testForward</h5><p><code>testForward(std::move(x))</code>也就是<code>testForward(static_cast&lt;int &amp;&amp;&gt;(x))</code>。根据万能引用的实例化规则，实例化的testForward大概长这样：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">T <span class="token operator">=</span> <span class="token keyword">int</span> 
-<span class="token keyword">void</span> <span class="token function">testForward</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">&amp;&amp;</span> v<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    <span class="token function">print</span><span class="token punctuation">(</span>std<span class="token operator">::</span>forward<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>万能引用绑定到右值上时，不会发生引用折叠，所以这里没有引用折叠。</p>
-<h5 id="step-2-实例化std-forward-1"><a href="#step-2-实例化std-forward-1" class="headerlink" title="step 2 实例化std::forward"></a>step 2 实例化std::forward</h5><blockquote>
-<p>注：C++ Primer：forward必须通过显式模板实参来调用，不能依赖函数模板参数推导。</p>
-</blockquote>
+                <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>今天在看《第一行代码》中关于SharedPreference的部分时，突然觉得用XML保存数据很不方便，比如如果要储存数组，用JSON中一行代码就可以解决的问题，XML还得自己写一些代码，比如：<a href="https://link.zhihu.com/?target=https://stackoverflow.com/questions/3876680/is-it-possible-to-add-an-array-or-object-to-sharedpreferences-on-android">Is it possible to add an array or object to SharedPreferences on Android</a>。</p>
+<p>所以我很好奇，XML在竞争如此激烈的时代，还在广泛被使用，是因为它是一个无法解决的历史遗留问题，还是因为XML确实有比JSON更优越的地方。</p>
 <blockquote>
-<p>这里用到的std::forward的代码和上面的一样，故略去。</p>
+<p>注：以下部分段落节选并翻译自<a href="https://link.zhihu.com/?target=https://stackoverflow.com/questions/2620270/what-is-the-difference-between-json-and-xml">StackOverflow</a>，不代表本人观点。</p>
 </blockquote>
-<p>由于Step1中我们调用<code>std::forward&lt;int&gt;</code>，所以此处我们代入<code>T = int</code>，我们有：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">int</span> <span class="token operator">&amp;&amp;</span> 
-<span class="token function">forward</span><span class="token punctuation">(</span><span class="token keyword">typename</span> <span class="token class-name">std</span><span class="token operator">::</span>remove_reference<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">::</span>type<span class="token operator">&amp;</span> __t<span class="token punctuation">)</span> <span class="token keyword">noexcept</span> <span class="token comment">//remove_reference的作用与名字一致，不过多解释</span>
- <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token keyword">static_cast</span><span class="token operator">&lt;</span><span class="token keyword">int</span> <span class="token operator">&amp;&amp;</span><span class="token operator">></span><span class="token punctuation">(</span>__t<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>这里又发生了2次引用折叠，所以上面的代码等价于：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">constexpr</span> <span class="token keyword">int</span> <span class="token operator">&amp;&amp;</span>
-<span class="token function">forward</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">&amp;</span> __t<span class="token punctuation">)</span> <span class="token keyword">noexcept</span> <span class="token comment">//remove_reference的作用与名字一致，不过多解释</span>
- <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token keyword">static_cast</span><span class="token operator">&lt;</span><span class="token keyword">int</span> <span class="token operator">&amp;&amp;</span><span class="token operator">></span><span class="token punctuation">(</span>__t<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>所以最终<code>std::forward&lt;int&gt;(v)</code>的作用就是将参数强制转型成<code>int &amp;&amp;</code>，而<code>int &amp;&amp;</code>为右值。所以，调用右值版本的print。</p>
-<h3 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h3><p>在GCC源码中，std::forward还有第二个版本：<a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc-5.4.0/libstdc++/api/a01395_source.html#l00087">link</a>，分析的方法与本文一致，这里就不讲了。。</p>
-<p>右值的概念其实很微妙，一旦某个右值，有了名字，也就在内存中有了位置，它就变成了1个左值。但它又是一个很有用的概念，<strong>允许程序员更加细粒度的处理对象拷贝时的内存分配问题，提高了对临时对象和不需要的对象的利用率</strong>，极大提高程序的效率。当然，也会引入更多的bug。不过，这就是C++的哲学，什么都允许你做，但出了问题，可别赖C++这门语言。</p>
-<p>完美转发基于万能引用，引用折叠以及std::forward模板函数。据我所知，STL出现std::forward，一定出现万能引用。其实这也很好理解，完美转发机制，是为了将左值和右值统一处理，节约代码量，而只有万能引用会出现同时接受左值和右值的情况，所以完美转发只存在于万能引用中。</p>
+<h2 id="XML与JSON最本质的区别"><a href="#XML与JSON最本质的区别" class="headerlink" title="XML与JSON最本质的区别"></a>XML与JSON最本质的区别</h2><blockquote>
+<p><a href="https://link.zhihu.com/?target=https://stackoverflow.com/a/2620466/6109336">来源</a>，我做了一些注解</p>
+</blockquote>
+<p>最根本上来说，XML是一个markup language（标记语言），而JSON是一种用于数据交换（data-interchange）的序列化对象的语言。</p>
+<p>根据Wiki的说法，标记语言是：</p>
+<blockquote>
+<p>In computer text processing, a markup language is a system for annotating a document in a way that is syntactically distinguishable from the text, meaning when the document is processed for display, the markup language is not shown, and is only used to format the text.</p>
+</blockquote>
+<p>标记语言除了文本信息，还包括了一些元信息，这些元信息用来标注如何处理文本信息，比如：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Document</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Paragraph</span> <span class="token attr-name">Align</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Center<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>                 <span class="token comment">&lt;!-- Align是元信息 --></span>
+        Here <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Bold</span><span class="token punctuation">></span></span>is<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Bold</span><span class="token punctuation">></span></span> some text.
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Paragraph</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Document</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>假如试图用JSON完完整整的表述上述的信息：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+    <span class="token property">"Paragraphs"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token property">"align"</span><span class="token operator">:</span> <span class="token string">"center"</span><span class="token punctuation">,</span>
+            <span class="token property">"content"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token string">"Here "</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+                    <span class="token property">"style"</span> <span class="token operator">:</span> <span class="token string">"bold"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token string">"is"</span> <span class="token punctuation">]</span>
+                <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+                <span class="token string">" some text."</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>是不是觉得JSON比XML还要复杂的多？</p>
+<p>原因在于，JSON里面没有<strong>元数据和数据的区别</strong>，<strong>所有的东西都是数据</strong>，所以要人为的加上一些多余的字符串（比如content）进行区分。</p>
+<hr>
+<p>同样的，XML也不擅长做JSON所擅长做的事，那就是序列化对象：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+    <span class="token property">"firstName"</span><span class="token operator">:</span> <span class="token string">"Homer"</span><span class="token punctuation">,</span>
+    <span class="token property">"lastName"</span><span class="token operator">:</span> <span class="token string">"Simpson"</span><span class="token punctuation">,</span>
+    <span class="token property">"relatives"</span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token string">"Grandpa"</span><span class="token punctuation">,</span> <span class="token string">"Marge"</span><span class="token punctuation">,</span> <span class="token string">"The Boy"</span><span class="token punctuation">,</span> <span class="token string">"Lisa"</span><span class="token punctuation">,</span> <span class="token string">"I think that's all of them"</span> <span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>如果用XML表示上述对象：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Person</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FirstName</span><span class="token punctuation">></span></span>Homer<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FirstName</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>LastName</span><span class="token punctuation">></span></span>Simpsons<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>LastName</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Relatives</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Relative</span><span class="token punctuation">></span></span>Grandpa<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Relative</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Relative</span><span class="token punctuation">></span></span>Marge<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Relative</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Relative</span><span class="token punctuation">></span></span>The Boy<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Relative</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Relative</span><span class="token punctuation">></span></span>Lisa<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Relative</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Relative</span><span class="token punctuation">></span></span>I think that's all of them<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Relative</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Relatives</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Person</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>从这个例子可以看到JSON有2点优于XML的地方：</p>
+<ul>
+<li>对象的内部结构一目了然，简洁明了。</li>
+<li>JSON语法规定[]是数组，{}是对象，而XML没有如此的语法规定，我们只能临时发明一种方式来表示数组，然后自己添加代码来识别这个数组。</li>
+</ul>
+<p>如果我们人为施加一种策略，那么XML的确可以完成JSON的工作，但是JSON本身内建了这种策略。</p>
+<p>比如<a href="https://link.zhihu.com/?target=https://stackoverflow.com/a/7998630/6109336">这里</a>，有人提出了XJSON，可以用XML完成JSON的工作：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>xjson</span><span class="token punctuation">></span></span>   
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>object</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>persons<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>array</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>object</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>Ford Prefect<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>gender</span><span class="token punctuation">></span></span>male<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>gender</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>object</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>object</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>Arthur Dent<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>gender</span><span class="token punctuation">></span></span>male<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>gender</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>object</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>object</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>Tricia McMillan<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>gender</span><span class="token punctuation">></span></span>female<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>gender</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>object</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>array</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>   
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>object</span><span class="token punctuation">></span></span> 
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>xjson</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>Once you wrote an XJSON processor, it could do exactly what JSON processor does, for all the types of data that JSON can represent, and you could translate data losslessly between JSON and XJSON.<br>如果你写出一个针对XJSON的解析包，那么它可以完成JSON所有的工作。</p>
+</blockquote>
+<p>不过，这未免也太眼花缭乱了一些。</p>
+<p>所以在表示对象这个问题上面，JSON是远比XML优越的一种语言。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>在我看来，XML和JSON是乍一看有点相似，但设计出发点和应用场景却并不重叠的语言。</p>
+<p>就好像以前我发现MATLAB除了可以做矩阵计算，还可以写GUI，但我觉得不会有人真的用它去写复杂的GUI界面。Python这种语言似乎很万能很流行，什么都可以做，甚至游戏，但不会真的有人去用Python去写游戏引擎的底层部分。</p>
+<p>延伸阅读：</p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/25636060">为什么都反对 XML 而支持使用 JSON？</a></p>
+<p>（END）</p>
 
                 
             </div>
@@ -642,7 +627,7 @@ Rvalue ref
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/04/29/cpp/wan-mei-zhuan-fa-yin-yong-zhe-die-wan-neng-yin-yong-std-forward/">http://example.com/2021/04/29/cpp/wan-mei-zhuan-fa-yin-yong-zhe-die-wan-neng-yin-yong-std-forward/</a>
+                    <a href="http://example.com/2021/02/21/others/xml-yu-json-zai-she-ji-mu-de-he-ying-yong-chang-jing-shang-de-qu-bie/">http://example.com/2021/02/21/others/xml-yu-json-zai-she-ji-mu-de-he-ying-yong-chang-jing-shang-de-qu-bie/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -680,20 +665,16 @@ Rvalue ref
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/C/">
-                                    <span class="chip bg-color">C++</span>
+                                <a href="/tags/XML/">
+                                    <span class="chip bg-color">XML</span>
                                 </a>
                             
-                                <a href="/tags/Template/">
-                                    <span class="chip bg-color">Template</span>
+                                <a href="/tags/JSON/">
+                                    <span class="chip bg-color">JSON</span>
                                 </a>
                             
-                                <a href="/tags/C-STL/">
-                                    <span class="chip bg-color">C++ STL</span>
-                                </a>
-                            
-                                <a href="/tags/GNU-C/">
-                                    <span class="chip bg-color">GNU C++</span>
+                                <a href="/tags/%E6%B2%A1%E4%BB%80%E4%B9%88%E7%94%A8/">
+                                    <span class="chip bg-color">没什么用</span>
                                 </a>
                             
                         </div>
@@ -737,10 +718,9 @@ Rvalue ref
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
                 <a href="/2021/04/29/cpp/wan-mei-zhuan-fa-yin-yong-zhe-die-wan-neng-yin-yong-std-forward/">
                     <div class="card-image">
@@ -758,9 +738,9 @@ Rvalue ref
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-29
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-29
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -773,7 +753,6 @@ Rvalue ref
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -801,7 +780,7 @@ Rvalue ref
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+                本篇&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
                 <a href="/2021/02/21/others/xml-yu-json-zai-she-ji-mu-de-he-ying-yong-chang-jing-shang-de-qu-bie/">
@@ -835,6 +814,7 @@ Rvalue ref
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
