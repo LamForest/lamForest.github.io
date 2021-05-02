@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>胡适日记 2021年5月</title>
+      <link href="2021/05/01/diary/2021-nian-5-yue/"/>
+      <url>2021/05/01/diary/2021-nian-5-yue/</url>
+      
+        <content type="html"><![CDATA[<h3 id="5-1-5-7"><a href="#5-1-5-7" class="headerlink" title="5.1-5.7"></a>5.1-5.7</h3><h4 id="5-1"><a href="#5-1" class="headerlink" title="5.1"></a>5.1</h4><p>劳动节。学习了PRT。<br>对女朋友生了大气，对不起。</p><h4 id="5-2"><a href="#5-2" class="headerlink" title="5.2"></a>5.2</h4><p>完成了作业2的基础部分的大半（Light项预计算，Shadow和Unshadow的传输项预计算），还是比较容易的，会使用现成的函数就好了。明天要写JS了，想想就蛋疼。还了解到了Yan的黑历史，太牛了。</p><p>晚上吃了10个麦辣鸡翅，真好吃。</p><p>爸爸买了灭蚊灯，不知道效果怎么样，最近被咬的好惨。</p><p>决定在博客上写日记了，不过要好好藏起来</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 汇编 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 汇编 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>完美转发 = 引用折叠 + 万能引用 + std::forward</title>
       <link href="2021/04/29/cpp/wan-mei-zhuan-fa-yin-yong-zhe-die-wan-neng-yin-yong-std-forward/"/>
       <url>2021/04/29/cpp/wan-mei-zhuan-fa-yin-yong-zhe-die-wan-neng-yin-yong-std-forward/</url>
@@ -27,31 +52,6 @@
             <tag> C++ STL </tag>
             
             <tag> GNU C++ </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>胡适日记 2021年5月</title>
-      <link href="2021/02/21/diary/2021-nian-5-yue/"/>
-      <url>2021/02/21/diary/2021-nian-5-yue/</url>
-      
-        <content type="html"><![CDATA[<h3 id="5-1-5-7"><a href="#5-1-5-7" class="headerlink" title="5.1-5.7"></a>5.1-5.7</h3><h4 id="5-1"><a href="#5-1" class="headerlink" title="5.1"></a>5.1</h4><p>劳动节。学习了PRT。<br>对女朋友生了大气，对不起。</p><h4 id="5-2"><a href="#5-2" class="headerlink" title="5.2"></a>5.2</h4><p>完成了作业2的基础部分的大半（Light项预计算，Shadow和Unshadow的传输项预计算），还是比较容易的，会使用现成的函数就好了。明天要写JS了，想想就蛋疼。还了解到了Yan的黑历史，太牛了。</p><p>晚上吃了10个麦辣鸡翅，真好吃。</p><p>爸爸买了灭蚊灯，不知道效果怎么样，最近被咬的好惨。</p><p>决定在博客上写日记了，不过要好好藏起来</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 汇编 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 汇编 </tag>
             
         </tags>
       
