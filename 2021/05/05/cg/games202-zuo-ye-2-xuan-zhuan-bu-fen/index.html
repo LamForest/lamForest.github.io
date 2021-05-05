@@ -452,6 +452,10 @@
                                 <span class="chip bg-color">PRT</span>
                             </a>
                         
+                            <a href="/tags/Real-Time-Rendering/">
+                                <span class="chip bg-color">Real Time Rendering</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -480,21 +484,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-05-05
+                    2021-05-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.5k
+                    2.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    11 分
+                    10 分
                 </div>
                 
 
@@ -568,7 +572,7 @@ L_i(R\omega_i) &= ... + c_1^{-1}B_1^{-1}(R\omega_i) + c_1^{0}B_1^{0}(R\omega_i) 
 B_1^{-1}(R\omega_i) &= \sum_{k  = -1}^{1} x_k B_1^k(\omega_i) =  x_{-1}B_1^{-1}(\omega_i) + x_{0}B_1^{0}(\omega_i) + x_{1}B_1^{1}(\omega_i) \tag 3\\
 B_1^{0}(R\omega_i) &= \sum_{k  = -1}^{1} y_k B_1^k(\omega_i) =  y_{-1}B_1^{-1}(\omega_i) + y_{0}B_1^{0}(\omega_i) + y_{1}B_1^{1}(\omega_i)\\
 B_1^{1}(R\omega_i) &= \sum_{k  = -1}^{1} z_k B_1^k(\omega_i) =  z_{-1}B_1^{-1}(\omega_i) + z_{0}B_1^{0}(\omega_i) + z_{1}B_1^{1}(\omega_i)
-\end{align}</script><p>假设d $x_k,y_k, z_k$全部已知，那将上面的式子代入式（2），有：</p>
+\end{align}</script><p>假设 $x_k,y_k, z_k$全部已知，那将上面的式子代入式（2），有：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 L_i(R\omega_i) = ... 
@@ -591,13 +595,16 @@ L_i(R\omega_i) = ...
 <script type="math/tex; mode=display">
 \begin{align}
 L_i(R\omega_i) = ... 
+
 + {c_1^{-1}}^{\prime}B_1^{-1}(\omega_i)
 + {c_1^{0}}^{\prime}B_1^{0}(\omega_i)
 + {c_1^{1}}^{\prime}B_1^{1}(\omega_i)
+
 &+...
+
 \end{align}</script><p>这样，我们就得到了旋转之后，各个球谐基函数的系数${c_l^m}^{\prime}$了。</p>
 <hr>
-<p>下一节定义了  $M_R$, 利用 $M_R$可以将 ${c_1^{-1}}^{\prime},{c_1^{0}}^{\prime},{c_1^{1}}^{\prime} $用矩阵乘法表示：</p>
+<p>下一节定义了 $M_R$, 利用 $M_R$可以将 ${c_1^{-1}}^{\prime},{c_1^{0}}^{\prime},{c_1^{1}}^{\prime} $用矩阵乘法表示：</p>
 <script type="math/tex; mode=display">
 \begin{pmatrix}
 {c_1^{-1}}^{\prime}\\
@@ -645,11 +652,16 @@ B_1^{1}(n_0) & B_1^{1}(n_1)  & B_1^{1}(n_2)\\
 \end{pmatrix}</script><p>为了表述方便，这里定义了 $P(\omega_i)$ （有的地方也称之为对$\omega_i$的投影）和$M_R$：</p>
 <script type="math/tex; mode=display">
 P(\omega_i) =
+
 \begin{pmatrix}
+
 B_1^{-1}(\omega_i) \\
 B_1^{0}(\omega_i) \\
 B_1^{1}(\omega_i) \\
+
+
 \end{pmatrix}, M_R = 
+
 \begin{pmatrix}
 x_{-1} & x_{0} & x_1 \\
 y_{-1} & y_{0} & y_1 \\
@@ -679,81 +691,16 @@ M_R = S A^{-1} \tag 6</script><blockquote>
 <li>$M_R = S A^{-1}$</li>
 <li>给定空间中任意一渲染点的坐标 $p$ 的在未旋转光源下的系数 $c = ({c_1^{-1}}^{},{c_1^{0}}^{},{c_1^{1}}^{})^T $, $c^{\prime} = {M_R}^T c$。</li>
 </ol>
-<p>更具体的例子可以参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/51267461" title="一种简易的旋转球谐函数系数的方法">1</a>文章尾部的示例一节。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
-<span class="token keyword">import</span> glob
-
-md_sources <span class="token operator">=</span> <span class="token string">"/home/ubuntu/blog/hexo/source/_posts"</span>
-<span class="token comment"># md_sources = "./_posts"</span>
-
-
-
-files <span class="token operator">=</span> glob<span class="token punctuation">.</span>glob<span class="token punctuation">(</span>md_sources <span class="token operator">+</span> <span class="token string">'/**/*.[mM][dD]'</span><span class="token punctuation">,</span> recursive<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-
-
-<span class="token comment">#1. find all md has mathjax = true</span>
-mathjaxed_files <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-<span class="token keyword">for</span> f <span class="token keyword">in</span> files<span class="token punctuation">:</span>
-    <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> handler<span class="token punctuation">:</span>
-        <span class="token keyword">for</span> line <span class="token keyword">in</span> handler<span class="token punctuation">.</span>readlines<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>startswith<span class="token punctuation">(</span><span class="token string">"mathjax:"</span><span class="token punctuation">)</span> <span class="token punctuation">:</span>
-                ws <span class="token operator">=</span> line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">":"</span><span class="token punctuation">)</span>
-                <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>ws<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">2</span> <span class="token keyword">and</span> ws<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"true"</span><span class="token punctuation">:</span>
-                    mathjaxed_files<span class="token punctuation">.</span>append<span class="token punctuation">(</span>f<span class="token punctuation">)</span>
-                    <span class="token keyword">break</span>
-
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"发现了如下mathjax = true的md文件："</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>mathjaxed_files<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-
-<span class="token comment">#2. delete empty lines in multi line latex</span>
-<span class="token keyword">for</span> f <span class="token keyword">in</span> mathjaxed_files<span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"----------------------------"</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"正在处理文件:[&#123;&#125;]"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    lines <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> handler<span class="token punctuation">:</span>
-        lines<span class="token operator">=</span> handler<span class="token punctuation">.</span>readlines<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-    output <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-
-    in_multiline_latex <span class="token operator">=</span> <span class="token boolean">False</span><span class="token punctuation">;</span>
-    
-    <span class="token keyword">for</span> ind<span class="token punctuation">,</span> orig_line <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>lines<span class="token punctuation">)</span><span class="token punctuation">:</span>
-
-        line <span class="token operator">=</span> orig_line<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token keyword">if</span> line<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span><span class="token string">"$$"</span><span class="token punctuation">)</span> <span class="token keyword">and</span> <span class="token builtin">len</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">:</span> <span class="token comment">#find or exit start of multi-line latex</span>
-            in_multiline_latex <span class="token operator">=</span> <span class="token keyword">not</span> in_multiline_latex
-            
-        <span class="token keyword">else</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> in_multiline_latex<span class="token punctuation">:</span>
-                <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
-                    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Find empty line in mult-line latex at [Line &#123;&#125;], deleted"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>ind<span class="token punctuation">)</span><span class="token punctuation">)</span>
-                    <span class="token keyword">continue</span>
-
-        output<span class="token punctuation">.</span>append<span class="token punctuation">(</span>orig_line<span class="token punctuation">)</span>
-
-
-    
-
-    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>output<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>lines<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"此文件发生了改变: [&#123;&#125;]"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token string">"w"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> handler<span class="token punctuation">:</span>
-            handler<span class="token punctuation">.</span>writelines<span class="token punctuation">(</span>output<span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"不会改变此文件:[&#123;&#125;]，在多行latex中没有空行"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    
-
-
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>更具体的例子可以参考[1][1]文章尾部的示例一节。</p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于这部分，有几个问题我也没完全搞懂。</p>
 <ol>
-<li><p>乘以 $M_R$还是 ${M_R}^T$？<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/51267461" title="一种简易的旋转球谐函数系数的方法">1</a>和作业2的任务书里面都是乘以 $M_R$，但是我上面的推导的结果是${M_R}^T$，我实现的时候对比了一下，乘以${M_R}^T$的结果才是对的，乘以${M_R}$的结果会使得渲染的结果与模型的旋转方向相反。</p>
+<li><p>乘以 $M_R$还是 ${M_R}^T$？[1][1]和作业2的任务书里面都是乘以 $M_R$，但是我上面的推导的结果是${M_R}^T$，我实现的时候对比了一下，乘以${M_R}^T$的结果才是对的，乘以${M_R}$的结果会使得渲染的结果与模型的旋转方向相反。</p>
 </li>
 <li><p>不同轴，如果使用同一个RotationMatrix进行模型的旋转和球谐系数的计算，会使得它们在绕不同轴旋转。。。这我暂时不能理解。</p>
 </li>
 </ol>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/51267461">[1]一种简易的旋转球谐函数系数的方法</a>    </p>
+
                 
             </div>
             <hr/>
@@ -823,6 +770,10 @@ mathjaxed_files <span class="token operator">=</span> <span class="token punctua
                             
                                 <a href="/tags/PRT/">
                                     <span class="chip bg-color">PRT</span>
+                                </a>
+                            
+                                <a href="/tags/Real-Time-Rendering/">
+                                    <span class="chip bg-color">Real Time Rendering</span>
                                 </a>
                             
                         </div>
@@ -912,6 +863,10 @@ mathjaxed_files <span class="token operator">=</span> <span class="token punctua
                     
                     <a href="/tags/PRT/">
                         <span class="chip bg-color">PRT</span>
+                    </a>
+                    
+                    <a href="/tags/Real-Time-Rendering/">
+                        <span class="chip bg-color">Real Time Rendering</span>
                     </a>
                     
                 </div>
