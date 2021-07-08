@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="我的布偶猫灰原, GeT Left">
+    <meta name="keywords" content="[C++ 标准库] 随机数的生成方式、性能对比、mingw的问题, GeT Left">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>我的布偶猫灰原 | GeT Left</title>
+    <title>[C++ 标准库] 随机数的生成方式、性能对比、mingw的问题 | GeT Left</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -323,12 +323,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/images/C++STL.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">我的布偶猫灰原</h1>
+                    <h1 class="description center-align post-title">[C++ 标准库] 随机数的生成方式、性能对比、mingw的问题</h1>
                 </div>
             </div>
         </div>
@@ -444,8 +444,20 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E7%81%B0%E5%8E%9F/">
-                                <span class="chip bg-color">灰原</span>
+                            <a href="/tags/C/">
+                                <span class="chip bg-color">C++</span>
+                            </a>
+                        
+                            <a href="/tags/Template/">
+                                <span class="chip bg-color">Template</span>
+                            </a>
+                        
+                            <a href="/tags/C-STL/">
+                                <span class="chip bg-color">C++ STL</span>
+                            </a>
+                        
+                            <a href="/tags/GNU-C/">
+                                <span class="chip bg-color">GNU C++</span>
                             </a>
                         
                     </div>
@@ -456,8 +468,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E7%81%B0%E5%8E%9F/" class="post-category">
-                                灰原
+                            <a href="/categories/C/" class="post-category">
+                                C++
                             </a>
                         
                     </div>
@@ -469,28 +481,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-06-17
+                    2021-07-08
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-06-24
+                    2021-07-08
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    126
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    6 分
                 </div>
                 
 
@@ -508,58 +520,123 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>我们有了一个小猫咪，是一只蓝双布偶猫妹妹！<br><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/20210617021816.png" alt=""></p>
-<h2 id="灰原的档案"><a href="#灰原的档案" class="headerlink" title="灰原的档案"></a>灰原的档案</h2><ul>
-<li>名字：灰原<br><img src="https://img.mix.sina.com.cn/auto/resize?img=https%3A%2F%2Fn.sinaimg.cn%2Fsinakd10100%2F416%2Fw640h576%2F20200416%2Fe7e2-iskepxs3899437.jpg&size=640_0&blur=1&blur_sigma=2" width="20%" height="20%"></li>
-<li>性别：女</li>
-<li>生日：2021年3月30日</li>
-<li>爱好：玩绳子，鞋带，电源线，拖鞋，逗猫棒</li>
-<li>体重：</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>日期</th>
-<th>2021年6月17号</th>
-<th>2021年6月24号</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>体重</td>
-<td>0.9kg</td>
-<td>1.05kg （+0.15 kg)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p> <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/20210624001939.png" width="40%" height="40%"></p>
+                <h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>本篇文章包含了以下内容：</p>
 <ul>
-<li>长度：2021年6月15日 大概32cm（从头到尾巴根部）</li>
+<li>随机数的两种生成方式：HRNG 、PRNG</li>
+<li>HRNG 和 PRNG 在 C++中的执行时间的比较</li>
+<li>mingw 的 <code>std::random_device</code> 存在的问题</li>
 </ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>日期</th>
-<th>2021年6月17号</th>
-<th>2021年6月24号</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>长度</td>
-<td>31cm</td>
-<td>33cm (+ 2cm)</td>
-</tr>
-</tbody>
-</table>
-</div>
+<h3 id="随机数的生成方式"><a href="#随机数的生成方式" class="headerlink" title="随机数的生成方式"></a>随机数的生成方式</h3><blockquote>
+<p>参考资料：</p>
+<p>[1] <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Random_number_generation">https://en.wikipedia.org/wiki/Random_number_generation</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20423025/answer/15097735">电脑取随机数是什么原理，是真正的随机数吗？ - 王納米的回答 - 知乎</a></p>
+</blockquote>
+<p>随机数生成（Random Number Generation, RNG）的方式一般有两种，分别为：</p>
 <ul>
-<li>食物：皇家猫奶糕、鸡胸肉、熟鸡蛋黄</li>
+<li><p>硬件生成随机数<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hardware_random_number_generator">Hardware RNG</a>，原理是用某个仪器一直探测环境中的物理量，将该物理量作为随机数，见[2]。由于人类目前还无法对真实的物理环境进行建模，所以无从预测下一个产生的随机数是什么。因此，HRNG可以看作真随机数，[2]中给出了一个具体的例子。</p>
+<p>另一个例子是 Intel 和 AMD CPU指令集中的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/RDRAND">RDRAND</a> 指令，该指令基于clock shift生成随机数：</p>
+<blockquote>
+<p>One way to build a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hardware_random_number_generator#Clock_drift">hardware random number generator</a> is to use two independent <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Crystal_oscillator">clock crystals</a>, one that for instance ticks 100 times per second and one that ticks 1 million times per second. </p>
+<p>On average the faster crystal will then tick 10,000 times for each time the slower one ticks. <strong>But since clock crystals are not precise, the exact number of ticks will vary.</strong> <strong>That variation can be used to create random bits.</strong> </p>
+<p>For instance, if the number of fast ticks is even, a 0 is chosen, and if the number of ticks is odd, a 1 is chosen. Thus such a 100/1000000 RNG circuit can produce 100 somewhat random bits per second. Typically such a system is biased—it might for instance produce more zeros than ones—and so hundreds of somewhat-random bits are <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Decorrelation">“whitened”</a> to produce a few unbiased bits.</p>
+</blockquote>
+</li>
+<li><p>算法生成随机数，比如c++中的 mt19937梅森旋转算法即为一种软件层面的随机数生成算法算法。如果知道了seed和算法的具体实现，别人就可以知道你生成的随机数序列。所以，又被称为 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">伪随机数生成器 Pseudo RNG</a>。其他的PRNG算法包括 Xorshift，linear congruential generators等。</p>
+</li>
 </ul>
-<h2 id="一些照片"><a href="#一些照片" class="headerlink" title="一些照片"></a>一些照片</h2><h3 id="2021年6月17日"><a href="#2021年6月17日" class="headerlink" title="2021年6月17日"></a>2021年6月17日</h3><p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/20210617021900.png" alt=""><br><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/70d2a7561c16ce82f090638910f1301.jpg" alt=""><br><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/045e4d296083a2b1bd0590ecb5cd3c2.jpg" alt=""><br><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/20210617022249.png" alt=""><br><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/20210617022322.png" alt=""></p>
+<h3 id="HRNG-vs-PRNG"><a href="#HRNG-vs-PRNG" class="headerlink" title="HRNG vs PRNG"></a>HRNG vs PRNG</h3><blockquote>
+<p>参考资料：</p>
+<p>[1] <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/39288595/why-not-just-use-random-device">https://stackoverflow.com/questions/39288595/why-not-just-use-random-device</a></p>
+</blockquote>
+<p>从上面的描述中可以看出，硬件生成的随机数似乎更好一些，是真随机数，而软件层面的随机数容易被人破解。但是在C++代码中，人们一般不直接使用HRNG。而是利用HRNG为PRNG生成一个种子，然后利用PRNG生成随机数，比如如下代码：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">std<span class="token operator">::</span>random_device rd<span class="token punctuation">;</span> <span class="token comment">//linux下，读取/dev/random获取硬件产生的随机数</span>
+std<span class="token operator">::</span>mt19937 e<span class="token punctuation">&#123;</span><span class="token function">rd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token comment">// or std::default_random_engine e&#123;rd()&#125;; 用HRNG作为PRNG的种子</span>
+std<span class="token operator">::</span>uniform_int_distribution<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> dist<span class="token punctuation">&#123;</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token function">dist</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// get random numbers with PRNG</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>为什么不直接使用 <code>std::random_device</code>呢？ 可以从效率和可解释性两个角度解释了这个问题，见[1]，讲的比较清楚，这里我就不过多解释了，只补充一个两者的执行速度的对比。</p>
+<p>这里用 <a target="_blank" rel="noopener" href="https://github.com/google/benchmark">google-benchmark</a> 对比了linux（ubuntu 20.04, gcc 9.2.0)下 <code>std::random_device</code> 和 <code>std::mt19937</code> 的执行速度：</p>
+<ul>
+<li><p>所使用的代码如下：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;benchmark/benchmark.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;random></span></span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">BM_PRNG</span><span class="token punctuation">(</span>benchmark<span class="token operator">::</span>State<span class="token operator">&amp;</span> state<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    std<span class="token operator">::</span>random_device rd<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>mt19937 e<span class="token punctuation">&#123;</span><span class="token function">rd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span> _ <span class="token operator">:</span> state<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token function">e</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">BENCHMARK</span><span class="token punctuation">(</span>BM_PRNG<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">BM_HRNG</span><span class="token punctuation">(</span>benchmark<span class="token operator">::</span>State<span class="token operator">&amp;</span> state<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    std<span class="token operator">::</span>random_device rd<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>uniform_int_distribution<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">dist</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span> _ <span class="token operator">:</span> state<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token function">rd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">BENCHMARK</span><span class="token punctuation">(</span>BM_HRNG<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">BENCHMARK_MAIN</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>运行结果如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">Run on (1 X 2494.14 MHz CPU )
+CPU Caches:
+  L1 Data 32 KiB (x1)
+  L1 Instruction 32 KiB (x1)
+  L2 Unified 4096 KiB (x1)
+  L3 Unified 28160 KiB (x1)
+Load Average: 2.70, 3.15, 16.35
+-----------------------------------------------------
+Benchmark           Time             CPU   Iterations
+-----------------------------------------------------
+BM_PRNG          35.9 ns         17.8 ns     39254461 
+BM_HRNG          1310 ns          640 ns      1091579<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<ul>
+<li>“真”随机数的耗时大概是“伪”随机数的 37倍，非常之慢。</li>
+</ul>
+<p>这非常类似非对称加密和对称加密，非对称加密（RSA）通常不用于直接加密信息，而是用于加密并交换对称密钥，然后用对称密钥（比如AES-256）交换要传输的信息，因为对称密钥加密解密的速度更快，但是相对更不安全。</p>
+<h3 id="mingw-中-std-random-device的问题"><a href="#mingw-中-std-random-device的问题" class="headerlink" title="mingw 中 std::random_device的问题"></a>mingw 中 std::random_device的问题</h3><p>分别在GCC，MSVC，Mingw中执行下述代码：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;random></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
+
+<span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    std<span class="token operator">::</span>random_device rd<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token function">rd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">", "</span><span class="token punctuation">;</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token function">rd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token string">", "</span><span class="token punctuation">;</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token function">rd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="msvc"><a href="#msvc" class="headerlink" title="msvc"></a>msvc</h4><p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210706202721923.png" alt="image-20210706202721923"></p>
+<h4 id="gcc"><a href="#gcc" class="headerlink" title="gcc"></a>gcc</h4><p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210706203142452.png" alt="image-20210706203142452"></p>
+<h4 id="Mingw-8-1-0"><a href="#Mingw-8-1-0" class="headerlink" title="Mingw 8.1.0"></a>Mingw 8.1.0</h4><p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210706203235855.png" alt="image-20210706203235855"></p>
+<hr>
+<p>显然，gcc和msvc下的random_device每次都产生了不一样的随机数序列。</p>
+<p>然而，mingw下的random_device每次都产生了同样的序列（deterministic）。</p>
+<blockquote>
+<p>A notable implementation where <code>std::random_device</code> is deterministic is old versions of MinGW (<a target="_blank" rel="noopener" href="https://sourceforge.net/p/mingw-w64/bugs/338/">bug 338</a>, fixed since GCC 9.2). The latest MinGW Versions can be downloaded from <a target="_blank" rel="noopener" href="https://gcc-mcf.lhmouse.com/">GCC with the MCF thread model</a>.</p>
+<p>From: <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/numeric/random/random_device">https://en.cppreference.com/w/cpp/numeric/random/random_device</a></p>
+</blockquote>
+<p>幸运的是，这个问题在mingw 9.2中被修复了。</p>
+<blockquote>
+<p>Add support for additional sources of randomness to std::random_device,<br>to allow using RDSEED for Intel CPUs and rand_s for Windows. When<br>supported these can be selected using the tokens “rdseed” and “rand_s”.<br>For <em>-w64-mingw32 targets the “default” token will now use rand_s, and<br>for other i?86-</em>-<em> and x86_64-</em>-* targets it will try to use “rdseed”<br>first, then “rdrand”, and finally “/dev/urandom”.</p>
+<p>From :  <a target="_blank" rel="noopener" href="https://patchwork.ozlabs.org/project/gcc/patch/20190529144517.GA9078@redhat.com/">https://patchwork.ozlabs.org/project/gcc/patch/20190529144517.GA9078@redhat.com/</a></p>
+</blockquote>
+<p>这算mingw的一个bug吗？实际上，并不算，因为C++标准过于宽松，它允许random_device每次产生同样的随机数序列：</p>
+<blockquote>
+<p><code>std::random_device</code> may be implemented in terms of an implementation-defined pseudo-random number engine if a non-deterministic source (e.g. a hardware device) is not available to the implementation. In this case each <code>std::random_device</code> object may generate the same number sequence.</p>
+<p>From: <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/numeric/random/random_device">https://en.cppreference.com/w/cpp/numeric/random/random_device</a></p>
+</blockquote>
 
                 
             </div>
@@ -586,7 +663,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/06/17/others/hui-yuan-de-cheng-chang-ri-ji/">http://example.com/2021/06/17/others/hui-yuan-de-cheng-chang-ri-ji/</a>
+                    <a href="http://example.com/2021/07/08/cpp/c-biao-zhun-ku-sui-ji-shu-de-sheng-cheng-fang-shi-xing-neng-dui-bi-mingw-de-wen-ti/">http://example.com/2021/07/08/cpp/c-biao-zhun-ku-sui-ji-shu-de-sheng-cheng-fang-shi-xing-neng-dui-bi-mingw-de-wen-ti/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -624,8 +701,20 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E7%81%B0%E5%8E%9F/">
-                                    <span class="chip bg-color">灰原</span>
+                                <a href="/tags/C/">
+                                    <span class="chip bg-color">C++</span>
+                                </a>
+                            
+                                <a href="/tags/Template/">
+                                    <span class="chip bg-color">Template</span>
+                                </a>
+                            
+                                <a href="/tags/C-STL/">
+                                    <span class="chip bg-color">C++ STL</span>
+                                </a>
+                            
+                                <a href="/tags/GNU-C/">
+                                    <span class="chip bg-color">GNU C++</span>
                                 </a>
                             
                         </div>
@@ -669,9 +758,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/07/08/cpp/c-biao-zhun-ku-sui-ji-shu-de-sheng-cheng-fang-shi-xing-neng-dui-bi-mingw-de-wen-ti/">
                     <div class="card-image">
@@ -688,9 +778,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-08
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-08
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -703,6 +793,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -733,31 +824,31 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/05/26/others/ming-ri-fang-zhou-ji-lu/">
+                <a href="/2021/06/17/others/hui-yuan-de-cheng-chang-ri-ji/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="アークナイツ">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="我的布偶猫灰原">
                         
-                        <span class="card-title">アークナイツ</span>
+                        <span class="card-title">我的布偶猫灰原</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            アークナイツ にっき
+                            我的布偶猫灰原
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-26
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-17
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E3%82%A2%E3%83%BC%E3%82%AF%E3%83%8A%E3%82%A4%E3%83%84/" class="post-category">
-                                    アークナイツ
+                            <a href="/categories/%E7%81%B0%E5%8E%9F/" class="post-category">
+                                    灰原
                                 </a>
                             
                             
@@ -767,8 +858,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E3%82%A2%E3%83%BC%E3%82%AF%E3%83%8A%E3%82%A4%E3%83%84/">
-                        <span class="chip bg-color">アークナイツ</span>
+                    <a href="/tags/%E7%81%B0%E5%8E%9F/">
+                        <span class="chip bg-color">灰原</span>
                     </a>
                     
                 </div>
