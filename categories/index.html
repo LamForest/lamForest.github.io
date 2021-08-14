@@ -261,7 +261,7 @@
     }
 
     .github-corner svg {
-        color: #0f9d58;
+        color: #030303;
         fill: #fff;
         height: 64px;
         width: 64px;
@@ -330,7 +330,8 @@
 <script>
     // 每天切换 banner 图.  Switch banner image every day.
     // var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
-    var bannerUrl = "/medias/banner/" + Math.floor(Math.random() * 8) + '.jpg';
+    // var bannerUrl = "/medias/banner/" + Math.floor(Math.random() * 8) + '.jpg';
+    var bannerUrl = "https://gitee.com/getleft/pics/raw/master/classnotes_2/7.jpg"
     $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
 </script>
 
@@ -406,11 +407,11 @@
                 </a>
                 
                 
-                <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" title="强化学习: 1">
+                <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" title="强化学习: 4">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
                             style="background-color: #82E0AA;">强化学习
-                        <span class="tag-length">1</span>
+                        <span class="tag-length">4</span>
                     </span>
                 </a>
                 
@@ -457,7 +458,7 @@
                     color: '#3C4858'
                 }
             },
-            indicator: [{"name":"图形学","max":4},{"name":"汇编","max":4},{"name":"C++","max":4},{"name":"编程随想","max":4},{"name":"アークナイツ","max":4},{"name":"灰原","max":4},{"name":"强化学习","max":4}],
+            indicator: [{"name":"图形学","max":5},{"name":"汇编","max":5},{"name":"C++","max":5},{"name":"编程随想","max":5},{"name":"アークナイツ","max":5},{"name":"灰原","max":5},{"name":"强化学习","max":5}],
             nameGap: 5,
             center: ['50%','55%'],
             radius: '66%'
@@ -468,7 +469,7 @@
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
             data : [
                 {
-                    value : [2,1,3,1,1,1,1],
+                    value : [2,1,3,1,1,1,4],
                     name : '文章分类数量'
                 }
             ]

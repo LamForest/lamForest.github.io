@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="[Paper Reading][强化学习] A3C, GeT Left">
+    <meta name="keywords" content="GeT Left">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>[Paper Reading][强化学习] A3C | GeT Left</title>
+    <title>GeT Left</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -261,7 +261,7 @@
     }
 
     .github-corner svg {
-        color: #0f9d58;
+        color: #030303;
         fill: #fff;
         height: 64px;
         width: 64px;
@@ -323,12 +323,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">[Paper Reading][强化学习] A3C</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -442,29 +442,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
-                                <span class="chip bg-color">强化学习</span>
-                            </a>
-                        
-                            <a href="/tags/Actor-Critic/">
-                                <span class="chip bg-color">Actor Critic</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                强化学习
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -473,28 +456,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-07-28
+                    2021-08-15
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-07-28
+                    2021-08-15
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.5k
+                    0
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    1 分
                 </div>
                 
 
@@ -512,71 +495,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>论文地址：<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1602.01783.pdf">Asynchronous Methods for Deep Reinforcement Learning</a> ICML 2016</p>
-<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>这篇文章的动机比较简单，为了找到Experience Replay的更好的替代。</p>
-<p>尽管文章的主题并不完全是A3C，但是论文中的A3C算法，在更短时间内，达到甚至超过了 Experience Replay 的 Performance。更难得可贵的是，A3C的思路极其简单，可以在此之上做很多A+B之类的研究，开辟了一个方向。</p>
-<p>A3C的想法大致为：每个agent在自己独立的环境中进行探索，互不干扰。每个agent进行一定次数的探索之后，得到梯度，用Actor-Critic的方式<strong>异步更新</strong>全局的  policy network 和 value-network。</p>
-<p>与Experience Replay之间的联系：</p>
-<ul>
-<li><p>将强化学习变为监督学习的一个难点在于 强化学习获得的样本是连续的，而连续的样本会影响神经网络的训练。Experience Replay通过随机采样储存的样本解决了这一点，打散了同一batch中样本的相关性，但是由于Experience Replay本身的问题，它不能用于on-policy RL算法。</p>
-</li>
-<li><p>A3C某种程度上也是在做同样的事情，模糊同一batch中样本的相关性。</p>
-<blockquote>
-<p>This parallelism also decorrelates the agents’ data into a more stationary process, since at any given time-step the parallel agents will be experiencing a variety of different states.</p>
-</blockquote>
-<p>但是，与Experience Replay不同的是，它可以用于on-policy RL算法。</p>
-</li>
-</ul>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>（将Conclusion放到最前面）</p>
-<p>这篇文章提出了一种比较泛用的算法框架，可以非常方便的与online RL算法做结合，并取得不错的效果。</p>
-<p>这篇文章提出的方法具有以下优点：</p>
-<ul>
-<li>考虑到 Experience Replay需要大量的内存存放transition以及GPU，这篇文章的方法运作在CPU上，需要的资源更少，但也具有加速/稳定深度强化学习算法的作用。</li>
-<li>此外，A3C的算法与Replay并没有冲突，所以二者可以结合，达到更好的效果，尤其是某些环境的transiton来之不易，需要多次复用（比如论文中的TORCS）。</li>
-<li>这篇文章提出的算法非常的general，所以有很多future work可以做，比如backward view n-step bootstrapping；与double Q-learning的结合等等</li>
-</ul>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Experience Replay存在缺点：</p>
-<ul>
-<li>需要大量计算资源（GPU，memory）</li>
-<li>仅适用于 off-policy 算法</li>
-</ul>
-<p>所以，有没有其他方法？</p>
-<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>Asynchronous是这篇论文的基本想法，可以与很多RL算法结合，比如 Q-learning：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210722151323505.png" alt="image-20210722151323505"></p>
-<p>还可以和 Actor-Critic结合，得到著名的A3C：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210722222151395.png" alt="image-20210722222151395"></p>
-<ul>
-<li><p>这个算法和 Actor-Critic没区别，只是多了并行异步的部分。</p>
-</li>
-<li><p>n-step bootstrapping：每个线程中对于value network和 policy network的更新都是 n-step bootstrapping的。与 Sutton Book中给出的n-step bootstrapping算法基本相同，只是有一点区别：</p>
-<p>在A3C中，每隔 $t_{max}$ 步骤停下来进行更新，从 $t-1 $ 更新到 $t_{start}$。对于 $t-1$ ,  $G_{t-1} = R_{t} + V(s_t)$（ $G_t$ 即上图中的 $R$），对于 $t - 2$ , $G_{t-2} = R_{t-1} + R_{t} + V(s_t)$ ….。也就是说，对于 $t-1$，相当于 TD(0)，对于 $t-2$ 相当于 TD(1)，对于 t_start，相当于 TD(t_max - 1)，是bootstrapping from last state。</p>
-</li>
-<li><p>正则项：为了鼓励exploration，在Loss Function末尾加上 $H\left(\pi\left(s_{t}\right)\right)$ ，这里 $H$ 代表entropy 。</p>
-<p>可以这么理解entropy和鼓励exploration之间的关系：当 $\pi$ 给出的概率分比较分散的时候，entropy比较大，即 $H\left(\pi\left(s_{t} ; \theta^{\prime}\right)\right)$ 比较大。加上这一 ”正则项“ 使得 $\pi$ 给出的概率不集中于某一个action，而是比较分散，即鼓励exploration。给出的probaentropy的 $\beta \nabla_{\theta^{\prime}} H\left(\pi\left(s_{t} ; \theta^{\prime}\right)\right)$  entropy（有点像反过来的Regularization）</p>
-</li>
-<li><p>网络结构：feature extractor (CNN) 共享，最后有两个独立的输出层——1）policy network的fc + softmax层；2）value network的 fc 层。</p>
-</li>
-</ul>
-<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Atari-2600-与Experience-Replay的对比"><a href="#Atari-2600-与Experience-Replay的对比" class="headerlink" title="Atari 2600: 与Experience Replay的对比"></a>Atari 2600: 与Experience Replay的对比</h3><p>与DQN的对比分两部分。</p>
-<h4 id="1-收敛速度"><a href="#1-收敛速度" class="headerlink" title="1. 收敛速度"></a>1. 收敛速度</h4><p>A3C（在16 CPU核上，没说是什么CPU，但是CPU跟GPU本就不是同一个量级的计算资源）比DQN（K40）更快。</p>
-<p>鉴于这篇文章想要challenge的是DQN中的Experience Replay，所以做了大量与DQN相关的对比实验。论文选取了5个Atari 2600中的游戏，比较DQN与这篇论文算法的性能。明显看到，A3C的收敛速度要快很多：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210727012205577.png" alt="image-20210727012205577"></p>
-<p>注：出于公平，A3C没有选DQN表现最差的游戏（可能A3C在这些游戏上表现也不好），比如 Breakout（打砖块）在DQN下面的结果也很好（不过不是最好的）。</p>
-<p>注：论文里似乎没有比较A3C和 Prioritized DQN or Dueling D-DQN的收敛速度。不过我觉得差别和DQN应该不大。</p>
-<h4 id="2-Scores"><a href="#2-Scores" class="headerlink" title="2. Scores"></a>2. Scores</h4><p>不仅收敛速度 A3C更快，充分训练后的performance也是最好的：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210728185737820.png" alt="image-20210728185737820"></p>
-<p>注：公平的对比是红框之间的对比，因为DQN没有用到LSTM，红框之间的网络结构是相同的。而<code>A3C,LSTM</code> 用到了LSTM，尽管效果远好于 Prioritized DQN，也不能充分说明 A3C 的优越性。</p>
-<h3 id="更多实验：TORCS-MoJoCo-Labyrinth"><a href="#更多实验：TORCS-MoJoCo-Labyrinth" class="headerlink" title="更多实验：TORCS, MoJoCo, Labyrinth"></a>更多实验：TORCS, MoJoCo, Labyrinth</h3><p>论文中还做了一些其他实验，但是没有涉及和DQN的比较，这里就略了。</p>
-<h3 id="Scalability"><a href="#Scalability" class="headerlink" title="Scalability"></a>Scalability</h3><p>这部分展现的是 线程个数对收敛速度的影响。</p>
-<p>对于前三种方法而言，令人惊讶的是 加速比竟然大于了 线程数量（这在普通多线程中是不可能的的），这说明多个线程同时更新一个模型可以加速模型的训练。</p>
-<blockquote>
-<p>We believe this is due to positive effect of multiple threads to reduce the bias in one-step methods.</p>
-</blockquote>
-<p>然后对于最有效的 A3C 来说，似乎没有这种效果（论文中似乎没有解释原因），但是加速比也很好了。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210726210743380.png" alt="image-20210726210743380"></p>
-<h3 id="Robustness"><a href="#Robustness" class="headerlink" title="Robustness"></a>Robustness</h3><p>这里展现的是A3C对与learning rate和网络初始化方式不敏感，不需要特别细致的调参。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210727010725301.png" alt="image-20210727010725301"></p>
-
+                
                 
             </div>
             <hr/>
@@ -602,7 +521,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/07/28/ml/a3c/">http://example.com/2021/07/28/ml/a3c/</a>
+                    <a href="http://example.com/2021/08/15/ml/qiang-hua-xue-xi/paper/dqn/">http://example.com/2021/08/15/ml/qiang-hua-xue-xi/paper/dqn/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -639,15 +558,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
-                                    <span class="chip bg-color">强化学习</span>
-                                </a>
-                            
-                                <a href="/tags/Actor-Critic/">
-                                    <span class="chip bg-color">Actor Critic</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -694,50 +605,34 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2021/07/28/ml/a3c/">
+                <a href="/2021/08/15/ml/qiang-hua-xue-xi/paper/dqn/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="[Paper Reading][强化学习] A3C">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">[Paper Reading][强化学习] A3C</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            A3C的读书笔记
+                            
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-28
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-15
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    强化学习
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            GeT Left
                             
                         </span>
                     </div>
                 </div>
 
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
-                        <span class="chip bg-color">强化学习</span>
-                    </a>
-                    
-                    <a href="/tags/Actor-Critic/">
-                        <span class="chip bg-color">Actor Critic</span>
-                    </a>
-                    
-                </div>
                 
             </div>
         </div>
@@ -748,56 +643,32 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/07/20/ml/meng-te-qia-luo-sou-suo-shu/">
+                <a href="/2021/08/15/ml/qiang-hua-xue-xi/paper/policy-gradient-therom/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="[强化学习][python] 在 tic-tac-toe 上实现 蒙特卡洛搜索树 MCTS 算法">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">[强化学习][python] 在 tic-tac-toe 上实现 蒙特卡洛搜索树 MCTS 算法</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            用python在tic-tac-toe上实现蒙特卡洛搜索树 MCTS 算法
+                            
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-20
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-15
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/C/" class="post-category">
-                                    C++
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            GeT Left
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
-                        <span class="chip bg-color">强化学习</span>
-                    </a>
-                    
-                    <a href="/tags/%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B/">
-                        <span class="chip bg-color">蒙特卡洛</span>
-                    </a>
-                    
-                    <a href="/tags/python/">
-                        <span class="chip bg-color">python</span>
-                    </a>
-                    
-                    <a href="/tags/UCB/">
-                        <span class="chip bg-color">UCB</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -926,13 +797,6 @@
 
 </main>
 
-
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
 
 
 
