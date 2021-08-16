@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="GeT Left">
+    <meta name="keywords" content="[Paper][强化学习][Nature 2018] AlphaGo Zero: 无需监督学习的AlphaGo, GeT Left">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>GeT Left</title>
+    <title>[Paper][强化学习][Nature 2018] AlphaGo Zero: 无需监督学习的AlphaGo | GeT Left</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -323,12 +323,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://gitee.com/getleft/pics/raw/master/classnotes_2/go_1000x560.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title"></h1>
+                    <h1 class="description center-align post-title">[Paper][强化学习][Nature 2018] AlphaGo Zero: 无需监督学习的AlphaGo</h1>
                 </div>
             </div>
         </div>
@@ -442,12 +442,33 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">强化学习</span>
+                            </a>
+                        
+                            <a href="/tags/MCTS/">
+                                <span class="chip bg-color">MCTS</span>
+                            </a>
+                        
+                            <a href="/tags/Model-Based-RL/">
+                                <span class="chip bg-color">Model-Based RL</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                强化学习
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -456,28 +477,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-15
+                    2021-08-16
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-08-15
+                    2021-08-16
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    1.9k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    7 分
                 </div>
                 
 
@@ -495,7 +516,99 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>论文地址：<a target="_blank" rel="noopener" href="https://www.nature.com/articles/nature24270.epdf?author_access_token=VJXbVjaSHxFoctQQ4p2k4tRgN0jAjWel9jnR3ZoTv0PVW4gB86EEpGqTRDtpIz-2rmo8-KG06gqVobU5NSCFeHILHcVFUeMsbvwS-lxjqQGg98faovwjxeTUgZAUMnRQ">不可下载</a>，<a target="_blank" rel="noopener" href="https://discovery.ucl.ac.uk/id/eprint/10045895/1/agz_unformatted_nature.pdf">可下载，草稿</a></p>
+<p>辨析：AlphaGo有好几个版本，按照时间顺序：AlphaGo Fan（即AlphaGo paper），AlphaGo Lee，AlphaGo Master，AlphaGo Zero（下文中有时会称之为Zero, this paper），AlphaZero（后续工作，Science Paper）。他们之间的区别参见 这篇论文的附录。</p>
+<h2 id="引子-amp-总结"><a href="#引子-amp-总结" class="headerlink" title="引子 &amp; 总结"></a>引子 &amp; 总结</h2><p>AlphaGo 确实超越了顶尖人类棋手（AlphaGo Lee 4:1打败了李世石），但是，AlphaGo无论是在成绩上还是算法上，还有很大的提升空间。</p>
+<ul>
+<li><p>从成绩角度来谈，成熟的围棋AI需要对人类有绝对100%的胜率，而不是负于李世石一盘。</p>
+</li>
+<li><p>至于AlphaGo的算法，从我的角度来看，最不自然的一点，就是train test的流程 不一致。按照深度监督学习的观点，如果想模型在测试集上的表现尽可能接近训练集上的表现，需要保证测试的流程和训练一致，否则会严重损害模型性能。然而，在AlphaGo的训练阶段，没有MCTS的参与。</p>
+<p>此外，现在深度学习追求的是end2end，而AlphaGo的training pipeline显得不够elegant。</p>
+</li>
+<li><p>最后是这篇文章所强调的核心，Mastering without Human Knowledge。用DL的话讲，就是不需要监督学习预训练和围棋专家数据集，只用强化学习的技术。</p>
+</li>
+</ul>
+<p>于是 AlphaGo Zero的算法相比于AlphaGo有了以下提升：</p>
+<ol>
+<li>保证了train test 的一致性，都包含了APV-MCTS</li>
+<li>抛弃了pipeline，用一个网络代替了所有网络</li>
+<li>移除了MCTS中的rollout阶段，完全由 value network决定。</li>
+<li>用 MCTS 提升 policy network 输出的action probability，并作为 label，训练policy network。 </li>
+</ol>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>Zero 的 训练方式可以看作是 off-policy的，一边在与环境交互（self-play）并把样本存入一个replay memory中；一边在做神经网络的训梯度下降（optimization)。</p>
+<p>所以，算法由2部分构成：self-play, optimize(sgd)。还有一个相对不太重要的部分为 Evaluation。三个部分之间是并行执行的。</p>
+<h3 id="1-Self-play-with-MCTS"><a href="#1-Self-play-with-MCTS" class="headerlink" title="1. Self-play with MCTS"></a>1. Self-play with MCTS</h3><p>Self-play的目的是在为 optimize阶段生成训练数据。</p>
+<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210812175049426.png" alt="image-20210812175049426"></p>
+<p><strong>和AlphaGo APV-MCTS的区别：</strong> 如果我对附录中的search algorithm理解没错的话，这部分和AlphaGo基本没有区别，除了省略了rollout（下式中 $\lambda = 0$ ，只根据value network 的输出来确定叶子结点的value）以及expand的方式。</p>
+<script type="math/tex; mode=display">
+V\left(s_{L}\right)=(1-\lambda) v_{\theta}\left(s_{L}\right)+\lambda z_{L}</script><p><strong>具体的Self-play流程</strong>：</p>
+<ul>
+<li>在每个state $s_t$ 处 执行MCTS，MCTS的每次simulation重复以下步骤：</li>
+</ul>
+<ol>
+<li><p>selection: （与AlphaGo中完全一样），用下式选出best edge/action：</p>
+<script type="math/tex; mode=display">
+a_{}=\underset{a}{\operatorname{argmax}}\left(Q\left(s_{t}, a\right)+u\left(s_{t}, a\right)\right)</script></li>
+<li><p>expand: （与AlphaGo中不同，总是expand）重复selection直到叶子节点，扩张。利用 current best network计算出 $P(s,a)$ 作为edge 的先验概率。</p>
+</li>
+<li><p>rollout: 无。</p>
+</li>
+<li><p>backup: （与AlphaGo中完全一样）利用 current best network计算出 叶子节点的 value  $V(s^{\prime})$，对从root到叶子节点上的这条path上的所有结点更新 $Q, N$。</p>
+</li>
+</ol>
+<ul>
+<li>MCTS结束之后，在root处，获取每个edge的 $N(root,a)$，并计算该action 的 概率 $\pi_a$:</li>
+</ul>
+<script type="math/tex; mode=display">
+\pi_{a} \propto N(s, a)^{1 / \tau}</script><p>所有action 的概率组成了一个向量 $\pi_t$ ，则当前这个state的transition为 ：$(s_t,  \pi_t , z_t)$。其中 $z_t$ 的值只有当这一盘围棋结束后才得知。</p>
+<ul>
+<li>当前state的动作 $a_t$ 采样于 $\pi_t$，和 (stocastic) Policy Gradient 中action 的获取方式一致：</li>
+</ul>
+<script type="math/tex; mode=display">
+a_{1} \sim \pi_{1}</script><ul>
+<li>当这一盘围棋结束之后（黑或白胜），得到 reward $z = \pm1$，则这一盘围棋的所有transition 的 $z_t = z$，并将所有transition $(s_t,  \pi_t , z_t), t = 0,1,2,….$ 全放入<strong>Replay memory</strong>中。Memory 大小为 500,000，淘汰最旧的。</li>
+</ul>
+<h3 id="2-Optimize-with-replay-memory"><a href="#2-Optimize-with-replay-memory" class="headerlink" title="2. Optimize with replay memory"></a>2. Optimize with replay memory</h3><p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210812175529187.png" alt="image-20210812175529187"></p>
+<p>这部分比较简单：</p>
+<ol>
+<li><p>sample uniformly from replay memory.</p>
+</li>
+<li><p>X = $s_t$ 。对于 policy 分支，Y = $\pi_t$ , 损失函数为cross entropy，对于 value 分支，$Y = z_t$ ，损失函数为 平方误差函数，再加上 L2 norm：</p>
+<script type="math/tex; mode=display">
+l=(z-v)^{2}-\boldsymbol{\pi}^{\mathrm{T}} \log \boldsymbol{p}+c\|\theta\|^{2}</script><p><em>注：一般如果有两个branch，它们之间的loss会由一个超参进行调节，比如：</em></p>
+<script type="math/tex; mode=display">
+l=\lambda(z-v)^{2}-\boldsymbol{\pi}^{\mathrm{T}} \log \boldsymbol{p}+c\|\theta\|^{2}</script><p><em>在这篇论文附录里提到了，$\lambda = 1$ 即 两个loss权重一样。</em></p>
+</li>
+<li><p>利用mini-bach SGD训练网络。</p>
+</li>
+</ol>
+<h3 id="3-Evaluation"><a href="#3-Evaluation" class="headerlink" title="3. Evaluation"></a>3. Evaluation</h3><p>每1000次 mini-BSGD之后，会存一个checkpoint a 。由于网络训练有波动，需要确保用最好的网络self-play生成训练数据。于是，作者让 a 和 current best network进行400局对弈，如果a胜出55%，则current best network = a。</p>
+<p>同时，Evalutaion可以一直跟踪checkpoint的表现，保证网络不会diverge。</p>
+<blockquote>
+<p>不过，在后续工作AlphaZero中，作者移除了400局对弈这一步，直接current best network = a。</p>
+</blockquote>
+<h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><p>从AlphaGo中的4个网络，简化成了1个网络，输入为棋局（以及过去几步的棋局，类似于DQN的输入有4帧），共享feature extractor，末端有两个分支，分别为policy branch：输出#actions 的概率；value branch： 棋局的value $V$ 。</p>
+<p>相比于AlphaGo中的网络，这篇论文的网络要深一些，并且与时俱进，引入了BN和残差网络。实验部分为了消除网络带来的影响，做了相关的实验，有兴趣的可以看看，这里省略了。</p>
+<p>输入相比于AlphaGo减少了一些，为19x19x17。17 = 8（8 most recent position，类似DQN的输入为4帧) + 8（8 most recent position of opponents）+ 1 （which player）</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="1-Evaluation-VS-AlphaGo"><a href="#1-Evaluation-VS-AlphaGo" class="headerlink" title="1. Evaluation VS AlphaGo"></a>1. Evaluation VS AlphaGo</h3><p>首先，最重要的就是AlphaGo Zero的效果，在围棋里面就是Elo rating。</p>
+<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210812181421233.png" alt="image-20210812181421233"></p>
+<ol>
+<li>图中可以看出AlphaGo Zero的Elo大幅超过了 AlphaGo Lee，这可以说明，AlphaGo Zero确实是比AlphaGo 更好的算法。此外，它们对战时，AlphaGo Zero以100：0的绝对优势胜出。</li>
+<li>尽管人类棋手数据训练出的 SL network在预测expert move 上更准确，但是Zero 却拥有更高的胜率。这意味着Zero找到了比人类棋手更优的解法。</li>
+<li>Elo 4000+已经远超人类棋手了，目前世界第一的Elo才为 3600分。</li>
+</ol>
+<h3 id="2-不同时期学到的不同Knowledge"><a href="#2-不同时期学到的不同Knowledge" class="headerlink" title="2. 不同时期学到的不同Knowledge"></a>2. 不同时期学到的不同Knowledge</h3><p>Zero训练的总时间为72h，作者展示了在不同训练阶段中Zero进行自我对弈self-play时，所生成的棋局。由于图比较大，这里就不放了。</p>
+<p>总的来说，在训练早期，Zero 的策略主要是贪心的，想要尽快围住对面，吃掉对面的棋子；在训练中期，Zero的眼光开始放的比较远，不再纠结于一棋一子的得失。在训练后期，Zero的大局观逐渐形成，打法多变，远超普通人类所能达到的水平。</p>
+<h3 id="3-Final-Performance"><a href="#3-Final-Performance" class="headerlink" title="3. Final Performance"></a>3. Final Performance</h3><p>作者最后训练了一个终极版AlphaGo Zero，从29 million盘棋中学习了40天，结果如下：</p>
+<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210812200455582.png" alt="image-20210812200455582"></p>
+<p>有几点值得注意的：</p>
+<ol>
+<li>纯端到端 DL 的方法 （raw network）与 DL + MCTS 的方法差距甚远。个人认为，这是因为围棋的可能的position数目过于庞大，不足以生成足够大量的样本让网络充分学习。然而，如果引入MCTS方法，那对于神经网络的要求不需要太高；在MCTS中，会从root向树的深处探索，而处于树深处的state，无论是policy还是value ，相比于root处，网络都会预测的都更精确一些，这使得最终MCTS给出的的 $\pi_t$ 显著优于只使用policy network得出的 action probability。所以，作者称MCTS为 policy improvement operator。</li>
+<li>ELO 达到 5000，训练时间40天。。除了Google估计其他企业以后也不太会继续在围棋上做研究了，除非硬件或深度学习理论层面有革新。</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] AlphaGo</p>
+<p>[2] Policy Gradient Therom, NIPS 1999</p>
+
                 
             </div>
             <hr/>
@@ -521,7 +634,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/08/15/ml/qiang-hua-xue-xi/paper/dqn/">http://example.com/2021/08/15/ml/qiang-hua-xue-xi/paper/dqn/</a>
+                    <a href="http://example.com/2021/08/16/ml/qiang-hua-xue-xi/paper/alphago-zero/">http://example.com/2021/08/16/ml/qiang-hua-xue-xi/paper/alphago-zero/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -558,7 +671,19 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">强化学习</span>
+                                </a>
+                            
+                                <a href="/tags/MCTS/">
+                                    <span class="chip bg-color">MCTS</span>
+                                </a>
+                            
+                                <a href="/tags/Model-Based-RL/">
+                                    <span class="chip bg-color">Model-Based RL</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -605,34 +730,53 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2021/08/15/ml/qiang-hua-xue-xi/paper/dqn/">
+                <a href="/2021/08/16/ml/qiang-hua-xue-xi/paper/alphago-zero/">
                     <div class="card-image">
                         
+                        <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/go_1000x560.jpg" class="responsive-img" alt="[Paper][强化学习][Nature 2018] AlphaGo Zero: 无需监督学习的AlphaGo">
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
-                        
-                        <span class="card-title"></span>
+                        <span class="card-title">[Paper][强化学习][Nature 2018] AlphaGo Zero: 无需监督学习的AlphaGo</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            Nature 2018 - Mastering the game of Go without Human Knowledge
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-16
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            GeT Left
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    强化学习
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">强化学习</span>
+                    </a>
+                    
+                    <a href="/tags/MCTS/">
+                        <span class="chip bg-color">MCTS</span>
+                    </a>
+                    
+                    <a href="/tags/Model-Based-RL/">
+                        <span class="chip bg-color">Model-Based RL</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -643,32 +787,51 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/08/15/ml/qiang-hua-xue-xi/paper/policy-gradient-therom/">
+                <a href="/2021/08/10/ml/qiang-hua-xue-xi/paper/alphago/">
                     <div class="card-image">
                         
+                        <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/go_1000x560.jpg" class="responsive-img" alt="[Paper][强化学习][Nature 2016] AlphaGo: Deep RL 与 Tree Search 的成功结合">
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
-                        
-                        <span class="card-title"></span>
+                        <span class="card-title">[Paper][强化学习][Nature 2016] AlphaGo: Deep RL 与 Tree Search 的成功结合</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            Nature 2016 - Mastering the game of Go with deep neural networks and tree search
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-10
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            GeT Left
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    强化学习
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">强化学习</span>
+                    </a>
+                    
+                    <a href="/tags/MCTS/">
+                        <span class="chip bg-color">MCTS</span>
+                    </a>
+                    
+                    <a href="/tags/Model-Based-RL/">
+                        <span class="chip bg-color">Model-Based RL</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -797,6 +960,13 @@
 
 </main>
 
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
 
 
 

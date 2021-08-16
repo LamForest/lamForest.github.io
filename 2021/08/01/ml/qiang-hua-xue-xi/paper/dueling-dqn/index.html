@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="GeT Left">
+    <meta name="keywords" content="[Paper][强化学习][ICML 2016] Dueling DQN, GeT Left">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>GeT Left</title>
+    <title>[Paper][强化学习][ICML 2016] Dueling DQN | GeT Left</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -323,12 +323,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://gitee.com/getleft/pics/raw/master/classnotes_2/atari%20breakout.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title"></h1>
+                    <h1 class="description center-align post-title">[Paper][强化学习][ICML 2016] Dueling DQN</h1>
                 </div>
             </div>
         </div>
@@ -442,12 +442,33 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">强化学习</span>
+                            </a>
+                        
+                            <a href="/tags/Model-Free/">
+                                <span class="chip bg-color">Model-Free</span>
+                            </a>
+                        
+                            <a href="/tags/Deep-Q-Learning/">
+                                <span class="chip bg-color">Deep Q-Learning</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                强化学习
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -456,28 +477,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-15
+                    2021-08-01
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-08-15
+                    2021-08-16
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    949
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -495,7 +516,45 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>论文：[ICML 2016] Dueling Network Architectures for Deep Reinforcement Learning</p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>如果说Double DQN，Prioritized Replay 是在 算法上对DQN的改进，那Dueling Network就是在网络结构上对 DQN的改进。和DQN相比，只需要将DQN中的网络替换成Dueling Network，其他部分保持不变。</p>
+<p><strong>Why Dueling Network work?</strong></p>
+<ol>
+<li>Dueling Network将 $Q$ 的学习拆分为 $V$ 和 $A$ 的学习。不同于 Single Network中每次更新时只有对应action的参数得到了更新，在Dueling Network中，每次更新，$V$ 都得到了更新。$V$ 的学习非常充分，对 $true \ V$ 的拟合也就更好，所以Q-learning 这种 Temporal Difference(TD) 算法的效果也好。</li>
+<li>对于一个state，可能其 $Q(s,a)$ 的绝对大小较大，但是 $Q(s,a_1), Q(s,a_2)…$ 之间的相差并不大，论文中以 game Seaquest举了例子。如果直接学习 $Q$ ，可能Q的绝对大小学的大差不差，但是 $Q(s,a_1), Q(s,a_2)…$ 之间的大小关系并不容易学习。所以这里将大小关系单独提出来进行学习（即 Advantage Branch）</li>
+</ol>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>Dueling Network的网络结构如下，两个branch分别预测 $V(s)$ 和 $A(s,a)$：</p>
+<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210806195520435.png" alt="image-20210806195520435"></p>
+<p>回忆 Advantage 的定义：$A(s,a) = Q(s,a) - V(s)$，似乎可以将Dueling Q-network的output layer构造成两个branch的简单相加：</p>
+<script type="math/tex; mode=display">
+Q(s, a ; \theta, \alpha, \beta)=V(s ; \theta, \beta)+A(s, a ; \theta, \alpha)</script><p><em>（注： $\theta$ 为共享卷积层的参数， $\alpha $ 为 branch A的参数， $\beta$ 为 branch V 的参数）</em></p>
+<p>但是作者认为这样是没有意义的（lack of identifiability）。因为，一种最极端的情况是，branch V全部输出0，branch A输出Q，这就退化成了DQN。总的来说，<strong>branch V需要知道自己在approximate V，branch A也需要知道自己在approximate A。</strong></p>
+<p>作者也做了相关的实验，如果直接这么构造输出层，实际的结果很差。</p>
+<p>于是，作者接下来提出了这样来构造output layer：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&Q(s, a ; \theta, \alpha, \beta)=V(s ; \theta, \beta)+ \left(A(s, a ; \theta, \alpha)-\max _{a^{\prime} \in|\mathcal{A}|} A\left(s, a^{\prime} ; \theta, \alpha\right)\right)
+\end{aligned}</script><p>当 $a = a^<em>$ 时，显然上式中第二项 $ A(s, a ; \theta, \alpha)-\max _{a^{\prime} \in|\mathcal{A}|} A\left(s, a^{\prime} ; \theta, \alpha\right) $ 为0，于是branch V 需要 approximate  $Q(s, a^</em> )$ 即 $V(s)$。</p>
+<p>这样一来，branch V 就知道自己在approximate V了。既然branch V 知道自己在approximate V，这也使得了 branch A 知道自己在approximate A了。（这个地方有一点难以理解，反正最终work了）</p>
+<p>不过，作者最终使用的是下面这个式子：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&Q(s, a ; \theta, \alpha, \beta)=V(s ; \theta, \beta)+\left(A(s, a ; \theta, \alpha)-\frac{1}{|\mathcal{A}|} \sum_{a^{\prime}} A\left(s, a^{\prime} ; \theta, \alpha\right)\right)
+\end{aligned}</script><p>它与之前那个式子没有本质上的区别，仅仅是为了提高训练的稳定性 [1] 。</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Policy-Evaluation"><a href="#Policy-Evaluation" class="headerlink" title="Policy Evaluation"></a>Policy Evaluation</h3><p>Dueling DQN比DQN优越之处，就是在于 预测 $Q$ 比 single stream(DQN) 更准。 而如何比较谁的 $Q$ 更准，最直接的就是抛开 policy improvement， 比较谁的 Evaluation的结果更精确。</p>
+<p>于是作者在一个toy environment(corridor) 做了实验。Dueling Network预测的 $Q$ 与 true $Q$ 相差更小，且收敛更快。当 #action 变大时，这个现象更明显。</p>
+<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210806210647553.png" alt="image-20210806210647553"></p>
+<h3 id="Atari"><a href="#Atari" class="headerlink" title="Atari"></a>Atari</h3><p>在Atari上的结果如下；</p>
+<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210807032829811.png" alt="image-20210807032829811"></p>
+<p>有几点值得注意的：</p>
+<ol>
+<li>We clip the gradients to have their norm less than or equal to 10. 这篇论文发现 gradient clip 尤其的有效。比如表中 Single vs Single Clip，有不小的提升，所以对于所有模型几乎都使用了 Clip。</li>
+<li>Prioritized Replay , Double Q-learning, Dueling Network 可以结合在一起，共同提升结果。</li>
+</ol>
+<h3 id="Saliency-Map"><a href="#Saliency-Map" class="headerlink" title="Saliency Map"></a>Saliency Map</h3><p>Saliency Map有多种实现方式[2]。这里采取的是计算 Jacobian 矩阵。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] <a target="_blank" rel="noopener" href="https://ai.stackexchange.com/questions/8128/difficulty-in-understanding-identifiability-in-the-dueling-network-architecture">Difficulty in understanding identifiability in the “Dueling Network Architectures for Deep Reinforcement Learning” paper</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/135376948">【强化学习 117】Saliency Map - 张楚珩的文章 - 知乎 </a></p>
+
                 
             </div>
             <hr/>
@@ -521,7 +580,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/08/15/ml/qiang-hua-xue-xi/paper/policy-gradient-therom/">http://example.com/2021/08/15/ml/qiang-hua-xue-xi/paper/policy-gradient-therom/</a>
+                    <a href="http://example.com/2021/08/01/ml/qiang-hua-xue-xi/paper/dueling-dqn/">http://example.com/2021/08/01/ml/qiang-hua-xue-xi/paper/dueling-dqn/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -558,7 +617,19 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">强化学习</span>
+                                </a>
+                            
+                                <a href="/tags/Model-Free/">
+                                    <span class="chip bg-color">Model-Free</span>
+                                </a>
+                            
+                                <a href="/tags/Deep-Q-Learning/">
+                                    <span class="chip bg-color">Deep Q-Learning</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -604,43 +675,6 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/08/15/ml/qiang-hua-xue-xi/paper/dqn/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
-                        
-                        <span class="card-title"></span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-15
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            GeT Left
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
                 <a href="/2021/08/02/ml/qiang-hua-xue-xi/paper/distributional-dqn/">
                     <div class="card-image">
                         
@@ -656,8 +690,64 @@
                         
                     </div>
                     <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-02
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    强化学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">强化学习</span>
+                    </a>
+                    
+                    <a href="/tags/Model-Free/">
+                        <span class="chip bg-color">Model-Free</span>
+                    </a>
+                    
+                    <a href="/tags/Deep-Q-Learning/">
+                        <span class="chip bg-color">Deep Q-Learning</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/07/31/ml/qiang-hua-xue-xi/paper/double-dqn/">
+                    <div class="card-image">
+                        
+                        <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/atari%20breakout.png" class="responsive-img" alt="[Paper][强化学习][AAAI 2016] Double DQN">
+                        
+                        <span class="card-title">[Paper][强化学习][AAAI 2016] Double DQN</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            AAAI 2016 - Deep Reinforcement Learning with Double Q-learning
+                        
+                    </div>
+                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-31
                             </span>
                         <span class="publish-author">
                             
@@ -676,6 +766,14 @@
                     
                     <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
                         <span class="chip bg-color">强化学习</span>
+                    </a>
+                    
+                    <a href="/tags/Model-Free/">
+                        <span class="chip bg-color">Model-Free</span>
+                    </a>
+                    
+                    <a href="/tags/Deep-Q-Learning/">
+                        <span class="chip bg-color">Deep Q-Learning</span>
                     </a>
                     
                 </div>
@@ -806,6 +904,13 @@
 
 </main>
 
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
 
 
 
