@@ -826,6 +826,8 @@ header .go-back i {
 
 .recommend .post-card .post-description {
     margin: 20px auto;
+    margin-top: 50px;
+    margin-bottom: -5px;
     max-width: 500px;
     height: 65px;
     font-weight: 500;

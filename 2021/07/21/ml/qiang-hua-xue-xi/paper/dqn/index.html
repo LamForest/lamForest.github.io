@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="[Paper][强化学习][Nature 2015] DQN论文笔记 及 实现, GeT Left">
+    <meta name="keywords" content="[Paper][RL][Nature 2015] DQN论文笔记 及 实现, GeT Left">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>[Paper][强化学习][Nature 2015] DQN论文笔记 及 实现 | GeT Left</title>
+    <title>[Paper][RL][Nature 2015] DQN论文笔记 及 实现 | GeT Left</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -328,7 +328,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">[Paper][强化学习][Nature 2015] DQN论文笔记 及 实现</h1>
+                    <h1 class="description center-align post-title">[Paper][RL][Nature 2015] DQN论文笔记 及 实现</h1>
                 </div>
             </div>
         </div>
@@ -527,7 +527,7 @@
 <p>来源：Sutton Book 2nd Edition</p>
 <p>Creating artificial agents that excel over a diverse collection of challenging tasks has been an enduring goal of artificial intelligence. The promise of machine learning as a means for achieving this has been frustrated by the need to craft problem-specific representations. DeepMind’s DQN stands as a major step forward by demonstrating that a single agent can learn problem-specific features enabling it to acquire humancompetitive skills over a range of tasks. This demonstration did not produce one agent that simultaneously excelled at all the tasks (because learning occurred separately for each task), but it showed that deep learning can reduce, and possibly eliminate, the need for problem-specific design and tuning.</p>
 </blockquote>
-<h2 id="1-总结"><a href="#1-总结" class="headerlink" title="1. 总结"></a>1. 总结</h2><ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li><p><strong>Features的提取</strong>: 当task中的状态数目超过一定数量时，必须采用Function Approximation（FA）的方法，这意味着需要将 $state$ 转换为 $feature$，这是一个non-trivial的问题。有没有一个end2end普适性特征提取方法吗？</p>
 <p>这篇文章是在2015年发表的，那几年，许多人都尝试将神经网络引入他们的领域，比如 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1311.2524">RCNN</a>。CNN非常善于从图像中提取特征，和DQN的setting完美吻合。但是，将CNN和FA结合起来，做<strong>端到端</strong>的训练并不容易，神经网络会引入很多问题。</p>
 </li>
@@ -708,9 +708,9 @@ L(\theta) = \frac{1}{2} \left(r_t + \gamma * max_{a}Q(s_{t+1}, a;\theta^{-}) - Q
                 <a href="/2021/07/28/ml/qiang-hua-xue-xi/paper/a3c/">
                     <div class="card-image">
                         
-                        <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/atari%20breakout.png" class="responsive-img" alt="[Paper][强化学习][ICML 2016] A3C">
+                        <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/atari%20breakout.png" class="responsive-img" alt="[Paper][RL][ICML 2016] A3C">
                         
-                        <span class="card-title">[Paper][强化学习][ICML 2016] A3C</span>
+                        <span class="card-title">[Paper][RL][ICML 2016] A3C</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -779,8 +779,8 @@ L(\theta) = \frac{1}{2} \left(r_t + \gamma * max_{a}Q(s_{t+1}, a;\theta^{-}) - Q
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/C/" class="post-category">
-                                    C++
+                            <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    强化学习
                                 </a>
                             
                             
