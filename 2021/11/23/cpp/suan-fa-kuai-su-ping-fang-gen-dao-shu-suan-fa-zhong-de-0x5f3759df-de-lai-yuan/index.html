@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="实时光线追踪 联合双边滤波 单帧降噪, GeT Left">
+    <meta name="keywords" content="[算法] 平方根倒数速算法中的魔数0x5f3759df的来源, GeT Left">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>实时光线追踪 联合双边滤波 单帧降噪 | GeT Left</title>
+    <title>[算法] 平方根倒数速算法中的魔数0x5f3759df的来源 | GeT Left</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -323,12 +323,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.arstechnica.net/wp-content/uploads/2018/03/Reflections_03_2560x1400-760x380.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://gitee.com/getleft/pics/raw/master/classnotes_2/c++yellow1.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">实时光线追踪 联合双边滤波 单帧降噪</h1>
+                    <h1 class="description center-align post-title">[算法] 平方根倒数速算法中的魔数0x5f3759df的来源</h1>
                 </div>
             </div>
         </div>
@@ -448,12 +448,16 @@
                                 <span class="chip bg-color">图形学</span>
                             </a>
                         
-                            <a href="/tags/Real-Time-Rendering/">
-                                <span class="chip bg-color">Real Time Rendering</span>
+                            <a href="/tags/C/">
+                                <span class="chip bg-color">C++</span>
                             </a>
                         
-                            <a href="/tags/Ray-Tracing/">
-                                <span class="chip bg-color">Ray-Tracing</span>
+                            <a href="/tags/IEEE-754/">
+                                <span class="chip bg-color">IEEE 754</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/">
+                                <span class="chip bg-color">牛顿迭代法</span>
                             </a>
                         
                     </div>
@@ -464,8 +468,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="post-category">
-                                图形学
+                            <a href="/categories/C/" class="post-category">
+                                C++
                             </a>
                         
                     </div>
@@ -477,28 +481,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-08-24
+                    2021-11-23
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-08-25
+                    2021-11-23
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.5k
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    5 分
                 </div>
                 
 
@@ -516,112 +520,89 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Summary:</p>
+                <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p><strong>平方根倒数速算法</strong>(Fast Inverse Square Root) [3]，是一个相当出名的算法，其具体作者已不可考，由于雷神之锤中大量使用了该种算法使得它为人所知。</p>
+<p>为什么需要平方根倒数而不是平方根本身？因为图形学中大量运算需要用到平方根倒数，而不需要平方根，比如 向量的<code>normalize()</code>操作 $\frac{1}{\sqrt{x^2 + y^2 + z^2}}(x,y,z)$ 就包含平方根倒数；而图形学中每一帧的渲染都至少需要调用上万次normalize。如果能加速平方根倒数的计算，那么渲染的速度将会大大提升。</p>
+<p>该算法诞生于20多年前，如今，该算法仅具有研究价值，但不具备使用价值[1]，CPU已经内置了速度更快，误差更小的指令；我们只需要使用 <code>1/sqrt(y)</code>。</p>
+<p>不过，这不影响我们去理解这个算法的精妙之处，在短短<strong>4行C代码</strong>里面，涉及了 1) IEEE 754标准 2) C 语言的undefined behavior 3) 牛顿迭代法。</p>
+<p>这里的重点是第二步，即如何推导出magic number <code>0x5f3759df</code>，更细节的部分可以参考 [2] [4]。</p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//from wikipedia [3]</span>
+<span class="token keyword">float</span> <span class="token function">Q_rsqrt</span><span class="token punctuation">(</span> <span class="token keyword">float</span> number <span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+	<span class="token keyword">long</span> i<span class="token punctuation">;</span>
+	<span class="token keyword">float</span> x2<span class="token punctuation">,</span> y<span class="token punctuation">;</span>
+	<span class="token keyword">const</span> <span class="token keyword">float</span> threehalfs <span class="token operator">=</span> <span class="token number">1.5F</span><span class="token punctuation">;</span>
+	x2 <span class="token operator">=</span> number <span class="token operator">*</span> <span class="token number">0.5F</span><span class="token punctuation">;</span>
+	y  <span class="token operator">=</span> number<span class="token punctuation">;</span>
+    
+    <span class="token comment">/*核心代码*/</span>
+    <span class="token comment">// 1. reinterpret_cast from float to int</span>
+	i  <span class="token operator">=</span> <span class="token operator">*</span> <span class="token punctuation">(</span> <span class="token keyword">long</span> <span class="token operator">*</span> <span class="token punctuation">)</span> <span class="token operator">&amp;</span>y<span class="token punctuation">;</span>                       <span class="token comment">// evil floating point bit level hacking（对浮点数的邪恶位元hack）</span>
+    <span class="token comment">// 2. 估算平方根倒数</span>
+	i  <span class="token operator">=</span> <span class="token number">0x5f3759df</span> <span class="token operator">-</span> <span class="token punctuation">(</span> i <span class="token operator">>></span> <span class="token number">1</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>               <span class="token comment">// what the fuck?</span>
+    <span class="token comment">// reinterpret_cast from int to float</span>
+	y  <span class="token operator">=</span> <span class="token operator">*</span> <span class="token punctuation">(</span> <span class="token keyword">float</span> <span class="token operator">*</span> <span class="token punctuation">)</span> <span class="token operator">&amp;</span>i<span class="token punctuation">;</span>
+  	<span class="token comment">// 3. 牛顿法</span>
+	y  <span class="token operator">=</span> y <span class="token operator">*</span> <span class="token punctuation">(</span> threehalfs <span class="token operator">-</span> <span class="token punctuation">(</span> x2 <span class="token operator">*</span> y <span class="token operator">*</span> y <span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">// 1st iteration （</span>
+<span class="token comment">//      y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed</span>
+
+	<span class="token keyword">return</span> y<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>算法大致分为3部分：</p>
 <ul>
-<li>为什么实时光线追踪（RTRT）需要降噪</li>
-<li>用联合双边滤波对RTRT的结果进行降噪（附伪代码和结果）</li>
-<li>Deferred Hybrid Ray Tracing 和 naive Path Tracing之间的区别</li>
-<li>论文Edge-Avoiding À-TrousWavelet Transform for fast Global Illumination Filtering 的</li>
+<li>reinterpret_cast 用于在float和int之间相互转换，否则任何一个编译器都会禁止对float型做位运算。</li>
+<li>利用magic number <code>0x5f3759df</code>估算平方根导数（见下文）</li>
+<li>一次牛顿迭代法（见下文）</li>
 </ul>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824192654885.png" alt="Deferred Hybrid Real-Time Ray-Tracing Overview, 图源 [4]"></p>
-<h2 id="为什么需要降噪？"><a href="#为什么需要降噪？" class="headerlink" title="为什么需要降噪？"></a>为什么需要降噪？</h2><p>光线追踪的效果非常真实：</p>
-<p><img src="https://pic.vibaike.com/img/2020/08/bt-poj.jpg" alt="光线追踪一个例子"></p>
-<p><img src="https://mlhr8q6s8c91.i.optimole.com/VVLFqVU-3ep7C8ue/w:899/h:844/q:90/https://www.imaginationtech.com/wp-content/uploads/2017/01/hard-shadows-ray-tracing-raster.gif" alt="光追生成软阴影"></p>
-<p>比如，渲染Cornell Box，不需要复杂的技术，只用光线追踪就可以实现软阴影、color bleeding、全局光照等效果。下图是我之前实现的<a target="_blank" rel="noopener" href="https://github.com/LamForest/GAMES101-Computer-Graphics-Assignment/blob/main/Assignment7-Windows/Assignment7/Renderer.cpp#L70">Path Tracing算法</a>：</p>
-<p><img src="https://user-images.githubusercontent.com/17798738/113547117-e0869100-961f-11eb-8ebd-ef2b4d7d8545.png" alt="img"></p>
-<p>然而，对于这个比较小的256x256的场景，在CPU下 SPP = 128时，一帧画面需要多达40s时间渲染：</p>
-<p><img src="https://user-images.githubusercontent.com/17798738/113546781-3e66a900-961f-11eb-84ce-37255cf09e88.png" alt="image"></p>
-<p>就算是用GPU进行优化，也达不到实时(30fps)的要求。</p>
-<hr>
-<p>于是，实时光追采取的方案是：用较小的SPP（比如1SPP）迅速渲染出每一帧的带有大量噪点画面，然后利用单帧降噪（联合双边滤波）和多帧降噪（Temporal Accumulation）提升画面质量：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210529102937056.png" alt="image-20210529102937056"></p>
-<p>这套Denoising方案可以得到比较不错的结果：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210529103156895.png" alt="image-20210529103156895"></p>
-<h2 id="联合双边滤波"><a href="#联合双边滤波" class="headerlink" title="联合双边滤波"></a>联合双边滤波</h2><p>说到降噪，能想到最简单的方案之一就是高斯滤波，然而高斯滤波只是单纯的加权平均一块区域的像素值，在降噪的同时，也模糊了不同物体之间的边界：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210605102156200.png" alt="高斯模糊"></p>
-<p>于是就有了<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9B%99%E9%82%8A%E6%BF%BE%E6%B3%A2%E5%99%A8">双边滤波</a>，不仅考虑两个像素之间的距离，还考虑了两个像素之间的颜色差。双边滤波假设：如果两个颜色之间的颜色差别较大，那他们就属于两个物体，那么，在滤波时不应该对彼此有贡献：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210605102708026.png" alt="双边滤波"></p>
-<p>然而，对于上面的图片，降噪结果貌似还可以；但是对于1SPP生成的实时光追图片，双边滤波的效果就不行了，因为噪点太多了，双边滤波的假设并不成立。</p>
-<hr>
-<p>观察高斯模糊和双边滤波，究其本质，是在用不同的度量（距离，颜色）来计算两个像素之间的相似性。但是由于实时光追的图片中大量噪声的存在，<strong>颜色这个度量本身是有噪声的</strong>，所以颜色并不是一个好的度量。</p>
-<p>那么有没有其他不带噪声的度量呢？有的，比如<strong>G-buffer</strong>中的Normal, Position(世界坐标系下的位置), Depth等等:</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824172516933.png" alt="场景"></p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824172108827.png" alt="Normal"></p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824172154024.png" alt="Position"></p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210605104116531.png" alt="image-20210605104116531"></p>
-<p>假设我们的联合双边滤波考虑了像素之间的距离 $|\mathbf{i}-\mathbf{j}|^{2}$，像素之间颜色的差别 $|\widetilde{C}[\mathrm{i}]-\widetilde{C}[\mathrm{j}]|^{2}$ 和 法线方向的差别:</p>
+<h2 id="估算平方根导数"><a href="#估算平方根导数" class="headerlink" title="估算平方根导数"></a>估算平方根导数</h2><p>IEEE 754标准中，32位浮点数包含1个符号位，8位指数 $E$，23位尾数 $M$，任一浮点数可以被表示为：$(1.M) <em> 2^{E - 127} = (1 + \frac{M}{2^{23}}) </em> 2^{E - 127}, M \in[0, 2^{23} ), E \in [0,256)$  .</p>
+<p><strong>目标</strong>：需要计算 $y$ 的平方根倒数 $\frac{1}{\sqrt{y}} = y^{-\frac{1}{2}}$， $y$ 的 IEEE 754形式为 $y = (1 + \frac{M_y}{2^{23}}) * 2^{E_y - 127}$.</p>
+<p>出于数学上的直觉，我们将 $y$ 取以2为底的对数：</p>
 <script type="math/tex; mode=display">
-D_{\text {normal }}(\mathbf{i}, \mathbf{j})=\arccos (\text { Normal }[\mathbf{i}] \cdot \text { Normal }[\mathbf{j}])</script><p>那最终 $i,j$ 像素彼此之间的贡献值就是：</p>
+\begin{align}
+\log y &= \log{((1 + M_y) * 2^{E_y - 127})} \\
+&= \log{(1+\frac{M_y}{2^{23}})} + E_y - 127
+\end{align}</script><p>$\frac{M_y}{2^{23}}$ 显然是在 $[0,1]$ 这个区间上，而在这个区间中，有$\log(1+x) \approx x$；</p>
+<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes/image-20211120210324606.png" alt="image-20211120210324606"></p>
+<p>如果再加上某个常数 $\mu$，那么这个给近似效果会更好一些：</p>
+<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes/image-20211120210608035.png" alt="image-20211120210608035"></p>
+<p>使用这个近似，可以进一步简化：</p>
 <script type="math/tex; mode=display">
-J(\mathbf{i}, \mathbf{j})=\exp \left(-\frac{\|\mathbf{i}-\mathbf{j}\|^{2}}{2 \sigma_{p}^{2}}-\frac{\|\widetilde{C}[\mathrm{i}]-\widetilde{C}[\mathrm{j}]\|^{2}}{2 \sigma_{c}^{2}}-\frac{D_{\text {normal }}(\mathbf{i}, \mathbf{j})^{2}}{2 \sigma_{n}^{2}}\right)</script><p>其中 $\widetilde{C}$ 是光线追踪的带有噪声的结果，$\sigma_*$是超参。联合双边滤波的伪代码如下：</p>
-<pre class="line-numbers language-none"><code class="language-none">def JBF(frame, normal): &#x2F;&#x2F;frame 原始噪声图像，normal G-buffer中的法线
-	filtered &#x3D; new [][]; &#x2F;&#x2F;和 frame大小一样的数组
-	for each pixel (x,y):
-		sum_of_weighted_values &#x3D; 0
-		sum_of_weights &#x3D; 0
-		for adjacent pixel (i,j):
-			weight &#x3D; compute_J((x,y), (i,j), normal, frame) &#x2F;&#x2F;按照上式计算的J
-			sum_of_weights +&#x3D; weight
-			sum_of_weighted_values +&#x3D; weight * frame(i,j)
-		
-		filtered[x][y] &#x3D; sum_of_weighted_values &#x2F; sum_of_weights;
-		
-	return filtered;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>原始噪声图像：</p>
-<p><img src="/images/cg/box-input.gif" alt="box-input"></p>
-<p>联合双边降噪结果：</p>
-<p><img src="/images/cg/box-filter.gif" alt="box-filter"></p>
-<h2 id="更多降噪技术-A-Trous-Wavelet"><a href="#更多降噪技术-A-Trous-Wavelet" class="headerlink" title="更多降噪技术 A-Trous Wavelet"></a>更多降噪技术 A-Trous Wavelet</h2><p>在联合双边滤波的基础上，有很多更快更先进的滤波算法。这里对 Edge-Avoiding À-TrousWavelet Transform for fast Global Illumination Filtering进行了实现，这篇文章结合了A-trous算法和联合双边滤波，通过多趟较小的滤波器模拟大滤波核的卷积操作。效果如下，在我的电脑上速度达到了联合双边滤波的8-10倍。</p>
-<p><img src="/images/cg/box-atrous.gif" alt="box-atrous"></p>
-<h2 id="补充知识-Deferred-Hybrid-Ray-Tracing"><a href="#补充知识-Deferred-Hybrid-Ray-Tracing" class="headerlink" title="补充知识: Deferred Hybrid Ray Tracing"></a>补充知识: Deferred Hybrid Ray Tracing</h2><h3 id="Deferred-Shading"><a href="#Deferred-Shading" class="headerlink" title="Deferred Shading"></a>Deferred Shading</h3><p>联合双边滤波需要G-buffer中的信息，G-buffer是Deferred Shading中的一个概念。</p>
-<p>一般而言，最简单的Shading方式是Forward Shading，它的伪代码可以这么写：</p>
-<pre class="line-numbers language-none"><code class="language-none">1. Vertex Shading
+\begin{align}
+\log y
+&= \log{(1+\frac{M_y}{2^{23}})} + E_y - 127 \\
+&\approx \frac{M_y}{2^{23}} + \mu + E_y - 127 \\
+&= \frac{1}{2^{23}}(M_y + E_y * 2^{23}) + \mu - 127
+\end{align}</script><p><strong>而 $M_y + E_y * 2^{23}$ 正是 float型 y 被转型为 int 型后的值</strong>。</p>
+<p>现在对 $y^{-\frac{1}{2}}$ 同样取对数：</p>
+<script type="math/tex; mode=display">
+\log y^{-\frac{1}{2}} = -\frac{1}{2} \log y \approx -\frac{1}{2}\left( \frac{1}{2^{23}}(M_y + E_y * 2^{23}) + \mu - 127 \right)</script><p>假设  $y^{-\frac{1}{2}}$ 的准确值为 $A$，其指数和尾数部分分别为 $E_A$ 和 $M_A$，同样对 $A$ 取对数：</p>
+<script type="math/tex; mode=display">
+\log A \approx \frac{1}{2^{23}}(M_A + E_A * 2^{23}) + \mu - 127</script><p><strong>则以上两式用不同的方式表达了 $\log A $ 即 $\log y^{-\frac{1}{2}}$ ，故联立以上两式可解得 $M_A + E_A * 2^{23}$</strong>：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\log A &= \log y^{-\frac{1}{2}}\\
+-\frac{1}{2}\left( \frac{1}{2^{23}}(M_y + E_y * 2^{23}) + \mu - 127 \right) &= \frac{1}{2^{23}}(M_A + E_A * 2^{23}) + \mu - 127 \\
 
-2. Rasterization
-for each triangle:
-	for each pixel in triangle:
-		if pass depth test:
-			3. fragment shading
-			color &#x3D; fragment_shader(...); &#x2F;&#x2F; fragment_shader需要做 1)片元属性插值 2)Lighting着色
-			frame_buffer[pixid] &#x3D; color;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Forward Shading有很明显的缺点：太慢了，调用了太多次fragment_shader，其中大部分调用是不必要的，因为会被后续更靠前的fragment覆盖，一个最极端的例子就是从场景最后方的三角形开始往前渲染。</p>
-<p>为了解决这个问题，Deferred Shading出现了，它的伪代码可以这么表示</p>
-<pre class="line-numbers language-none"><code class="language-none">1. Vertex Shading
-
-2. Rasterization
-for each triangle:
-	for each pixel in triangle:
-		if pass depth test:
-			3. write to G-buffer
-			normal, position, albedo, ... &#x3D; fragment_geometry_shader(...);
-			g_buffer_normal[pixid] &#x3D; normal;
-			g_buffer_position[pixid] &#x3D; position;
-			g_buffer_albedo[pixid] &#x3D; albedo;
-			
-3. Deferred Shading
-for each pixel:
-	frame_buffer[pixid] &#x3D; fragment_lighting_shader(
-			g_buffer_normal[pixid],
-			g_buffer_position[pixid],
-			g_buffer_albedo[pixid],
-            ...
-       );
-			<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其核心思想是将昂贵的光照计算移到后面，使得 光照计算的次数 与 场景中的物体个数无关，只与像素个数有关。</p>
-<p><img src="http://learnopengl.com/img/advanced-lighting/deferred_overview.png" alt="deferred_overview"></p>
-<p>更多Deferred Shading的知识可以参考 [1] [2] [3]。</p>
-<h3 id="Hybrid-Rendering"><a href="#Hybrid-Rendering" class="headerlink" title="Hybrid Rendering"></a>Hybrid Rendering</h3><p><a target="_blank" rel="noopener" href="https://github.com/LamForest/GAMES101-Computer-Graphics-Assignment/blob/3fb956f2d16a3546e0b5bc23c4aeb2dd55d6ce72/Assignment7-Windows/Assignment7/Renderer.cpp#L70">Path Tracing算法</a>是一种纯粹的蒙塔卡罗光线追踪算法，和光栅化可以说是没有任何关系；但由上文可知，联合双边滤波降噪所需的G-Buffer是光栅化的产物，光线追踪中为什么又有光栅化呢？</p>
-<p>现在，为了尽量加快速度，工业界常用的算法并不是纯粹的光线追踪算法，而是一种混合了光栅化和光线追踪的算法，Hybrid Rendering。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210529102754498.png" alt="image-20210529102754498"></p>
-<p>Hybrid Rendering 会先进行一遍光栅化得到G-buffer，再从G-buffer的每个像素出发，进行光线追踪，整个过程如下图所示：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824192654885.png" alt="图源 [4]"></p>
-<h2 id="Acknowledgement"><a href="#Acknowledgement" class="headerlink" title="Acknowledgement"></a>Acknowledgement</h2><p>这篇文章部分内容来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YK4y1T7yY?p=13">GAMES202 闫令琪</a> ，文中的部分截图来自于课中使用的幻灯片，非常感谢闫老师深入浅出的课程以及实现框架的助教们。</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
-<li><a target="_blank" rel="noopener" href="https://learnopengl-cn.readthedocs.io/zh/latest/05%20Advanced%20Lighting/08%20Deferred%20Shading/">learn opengl 延迟着色法</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/polobymulberry/p/5126892.html">【原】实时渲染中常用的几种Rendering Path</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54694743">游戏引擎中的光照算法</a></li>
-<li><a target="_blank" rel="noopener" href="https://link.springer.com/content/pdf/10.1007%2F978-1-4842-4427-2_26.pdf">Deferred Hybrid Path Tracing, RayTracing Gem</a></li>
-</ol>
+\end{align}</script><p>略去中间过程，可得：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+M_A + E_A * 2^{23} &= 2^{23} * \frac{3}{2}(127 - \mu) - \frac{1}{2}(M_y + E_y * 2^{23}) \\
+\end{align}</script><p>第一项中的 $\mu$ 取 $ 0.0450461875791687011756$ 时[3]，第一项的结果为 $1597463011$，16进制表示为 <code>0x5F3759e3</code>；如果将第二项的 $\frac{1}{2}$ 变为移位运算，则上式和代码中的 这一行无比相近</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">i  <span class="token operator">=</span> <span class="token number">0x5f3759df</span> <span class="token operator">-</span> <span class="token punctuation">(</span> i <span class="token operator">>></span> <span class="token number">1</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>只是magic number差了一点点，如果 $\mu$ 的值恰当，应该可以得到完全一样的数字。</p>
+<h2 id="牛顿迭代法"><a href="#牛顿迭代法" class="headerlink" title="牛顿迭代法"></a>牛顿迭代法</h2><p>牛顿迭代法的更新公式为：</p>
+<script type="math/tex; mode=display">
+x_{t+1} = x_t - f(x_t) / f^\prime(x_t)</script><p>牛顿迭代法的前提条件：要求初始点在函数零点附近，因为<code>i  = 0x5f3759df - ( i &gt;&gt; 1 );</code>所估算的结果误差应该不大，可以认为前提条件已经满足。</p>
+<p>此时，我们的问题为，已知 $y$， 需要求 $x$ 使得 $\frac{1}{\sqrt{y}} = x$，即 $\frac{1}{x^2} = y$，移项得$f(x) = \frac{1}{x^2} - y = 0$ ，对 $f(x)$ 应用牛顿迭代可得迭代公式为：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+x_{t+1} &= x_t - f(x_t) / f^\prime(x_t) \\
+x_{t+1} &= \frac{3}{2}x_t - \frac{y}{2}x_t^3
+\end{align}</script><p>翻译成代码就是：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">y  <span class="token operator">=</span> y <span class="token operator">*</span> <span class="token punctuation">(</span> threehalfs <span class="token operator">-</span> <span class="token punctuation">(</span> x2 <span class="token operator">*</span> y <span class="token operator">*</span> y <span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] Is fast inverse square root still used? <a target="_blank" rel="noopener" href="https://www.quora.com/Is-fast-inverse-square-root-still-used">https://www.quora.com/Is-fast-inverse-square-root-still-used</a></p>
+<p>[2] Fast Inverse Square Root — A Quake III Algorithm <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=p8u_k2LIZyo">https://www.youtube.com/watch?v=p8u_k2LIZyo</a></p>
+<p>[3] wiki-平方根倒数速算法 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E5%B9%B3%E6%96%B9%E6%A0%B9%E5%80%92%E6%95%B0%E9%80%9F%E7%AE%97%E6%B3%95">https://zh.wikipedia.org/zh-hans/%E5%B9%B3%E6%96%B9%E6%A0%B9%E5%80%92%E6%95%B0%E9%80%9F%E7%AE%97%E6%B3%95</a></p>
+<p>[4] 论文 <a target="_blank" rel="noopener" href="https://www.lomont.org/papers/2003/InvSqrt.pdf">https://www.lomont.org/papers/2003/InvSqrt.pdf</a></p>
 
                 
             </div>
@@ -648,7 +629,7 @@ for each pixel:
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/08/24/cg/rtrt-dan-zheng-jiang-zao/">http://example.com/2021/08/24/cg/rtrt-dan-zheng-jiang-zao/</a>
+                    <a href="http://example.com/2021/11/23/cpp/suan-fa-kuai-su-ping-fang-gen-dao-shu-suan-fa-zhong-de-0x5f3759df-de-lai-yuan/">http://example.com/2021/11/23/cpp/suan-fa-kuai-su-ping-fang-gen-dao-shu-suan-fa-zhong-de-0x5f3759df-de-lai-yuan/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -690,12 +671,16 @@ for each pixel:
                                     <span class="chip bg-color">图形学</span>
                                 </a>
                             
-                                <a href="/tags/Real-Time-Rendering/">
-                                    <span class="chip bg-color">Real Time Rendering</span>
+                                <a href="/tags/C/">
+                                    <span class="chip bg-color">C++</span>
                                 </a>
                             
-                                <a href="/tags/Ray-Tracing/">
-                                    <span class="chip bg-color">Ray-Tracing</span>
+                                <a href="/tags/IEEE-754/">
+                                    <span class="chip bg-color">IEEE 754</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/">
+                                    <span class="chip bg-color">牛顿迭代法</span>
                                 </a>
                             
                         </div>
@@ -739,9 +724,10 @@ for each pixel:
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/11/23/cpp/suan-fa-kuai-su-ping-fang-gen-dao-shu-suan-fa-zhong-de-0x5f3759df-de-lai-yuan/">
                     <div class="card-image">
@@ -758,9 +744,9 @@ for each pixel:
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-23
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-23
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -773,6 +759,7 @@ for each pixel:
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -803,30 +790,30 @@ for each pixel:
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/08/16/ml/qiang-hua-xue-xi-mu-lu/">
+                <a href="/2021/08/24/cg/rtrt-dan-zheng-jiang-zao/">
                     <div class="card-image">
                         
-                        <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/go_1000x560.jpg" class="responsive-img" alt="强化学习目录">
+                        <img src="https://cdn.arstechnica.net/wp-content/uploads/2018/03/Reflections_03_2560x1400-760x380.png" class="responsive-img" alt="实时光线追踪 联合双边滤波 单帧降噪">
                         
-                        <span class="card-title">强化学习目录</span>
+                        <span class="card-title">实时光线追踪 联合双边滤波 单帧降噪</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            论文笔记 &《RL:An Introduction》读书笔记 & 强化学习代码实现
+                            为什么实时光线追踪需要降噪；联合双边降噪（附代码和结果）；Deferred Hybrid Ray Tracing；Edge-Avoiding À-Trous Wavelet 复现
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-24
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    强化学习
+                            <a href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="post-category">
+                                    图形学
                                 </a>
                             
                             
@@ -836,8 +823,16 @@ for each pixel:
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
-                        <span class="chip bg-color">强化学习</span>
+                    <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                        <span class="chip bg-color">图形学</span>
+                    </a>
+                    
+                    <a href="/tags/Real-Time-Rendering/">
+                        <span class="chip bg-color">Real Time Rendering</span>
+                    </a>
+                    
+                    <a href="/tags/Ray-Tracing/">
+                        <span class="chip bg-color">Ray-Tracing</span>
                     </a>
                     
                 </div>
