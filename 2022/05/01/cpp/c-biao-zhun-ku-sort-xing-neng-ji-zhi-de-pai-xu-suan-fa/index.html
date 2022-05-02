@@ -557,26 +557,26 @@
 <li><p><strong>Partition</strong>：Partition由<code>__unguarded_partition</code> 实现，</p>
 </li>
 </ul>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">while (true)
-	&#123;
-	  while (__comp(__first, __pivot)) &#x2F;&#x2F;不会判断 first &lt;&#x3D; last
-	    ++__first;
-	  --__last;
-	  while (__comp(__pivot, __last)) &#x2F;&#x2F;同上
-	    --__last;
-	  if (!(__first &lt; __last))
-	    return __first;
-	  std::iter_swap(__first, __last);
-	  ++__first;
-	&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+	<span class="token punctuation">&#123;</span>
+	  <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">__comp</span><span class="token punctuation">(</span>__first<span class="token punctuation">,</span> __pivot<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//不会判断 first &lt;= last</span>
+	    <span class="token operator">++</span>__first<span class="token punctuation">;</span>
+	  <span class="token operator">--</span>__last<span class="token punctuation">;</span>
+	  <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">__comp</span><span class="token punctuation">(</span>__pivot<span class="token punctuation">,</span> __last<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//同上</span>
+	    <span class="token operator">--</span>__last<span class="token punctuation">;</span>
+	  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>__first <span class="token operator">&lt;</span> __last<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	    <span class="token keyword">return</span> __first<span class="token punctuation">;</span>
+	  std<span class="token operator">::</span><span class="token function">iter_swap</span><span class="token punctuation">(</span>__first<span class="token punctuation">,</span> __last<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	  <span class="token operator">++</span>__first<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>它的操作与一般的快排基本一致。唯一的区别是，循环时不会判断 <code>first &lt;= last</code>，但这并不会导致越界。</p>
 <p>这是因为之前使用了median-of-three，所以数组中至少有一个元素大于或等于pivot，所以 <code>while (__comp(__first, __pivot))</code>一定会在某个元素处停止，一定不会越界。这为代码减少了2处越界条件判断，略微提升了速度。</p>
 <blockquote>
 <p>经常会有这么一种bug，如果<code>__comp</code> 仿函数存在错误，可能会导致越界[2]，比如：</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">std::vector&lt;int&gt; values&#123;6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6&#125;;
-std::sort(values.begin(), values.end(), [](int v1, int v2)&#123;
-return v1 &gt;&#x3D; v2;
-&#125;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> values<span class="token punctuation">&#123;</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+std<span class="token operator">::</span><span class="token function">sort</span><span class="token punctuation">(</span>values<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> values<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">int</span> v1<span class="token punctuation">,</span> <span class="token keyword">int</span> v2<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+<span class="token keyword">return</span> v1 <span class="token operator">>=</span> v2<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><a target="_blank" rel="noopener" href="https://onlinegdb.com/qVqxgESB8">试试看</a></p>
 <p>这就是__unguarded_partition不做越界检查导致的。</p>
 </blockquote>
@@ -623,36 +623,36 @@ __val <span class="token operator">=</span> <span class="token function">_GLIBCX
 <h4 id="insertion-sort"><a href="#insertion-sort" class="headerlink" title="__insertion_sort"></a><code>__insertion_sort</code></h4><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">__insertion_sort</span><span class="token punctuation">(</span>_RandomAccessIterator __first<span class="token punctuation">,</span>
    _RandomAccessIterator __last<span class="token punctuation">,</span> _Compare __comp<span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>__first <span class="token operator">==</span> __last<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>__first <span class="token operator">==</span> __last<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
 
-      	<span class="token keyword">for</span> <span class="token punctuation">(</span>_RandomAccessIterator __i <span class="token operator">=</span> __first <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> __i <span class="token operator">!=</span> __last<span class="token punctuation">;</span> <span class="token operator">++</span>__i<span class="token punctuation">)</span>
-    	<span class="token punctuation">&#123;</span>
-          <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">__comp</span><span class="token punctuation">(</span>__i<span class="token punctuation">,</span> __first<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// 特例，不满足__unguarded_linear_insert的前提条件</span>
-            <span class="token punctuation">&#123;</span>
-              <span class="token keyword">typename</span> <span class="token class-name">iterator_traits</span><span class="token operator">&lt;</span>_RandomAccessIterator<span class="token operator">></span><span class="token operator">::</span>value_type
-            __val <span class="token operator">=</span> <span class="token function">_GLIBCXX_MOVE</span><span class="token punctuation">(</span><span class="token operator">*</span>__i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//move</span>
-              <span class="token function">_GLIBCXX_MOVE_BACKWARD3</span><span class="token punctuation">(</span>__first<span class="token punctuation">,</span> __i<span class="token punctuation">,</span> __i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//copy_backward</span>
-              <span class="token operator">*</span>__first <span class="token operator">=</span> <span class="token function">_GLIBCXX_MOVE</span><span class="token punctuation">(</span>__val<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-          <span class="token keyword">else</span>
-            std<span class="token operator">::</span><span class="token function">__unguarded_linear_insert</span><span class="token punctuation">(</span>__i<span class="token punctuation">,</span>
-                    __gnu_cxx<span class="token operator">::</span>__ops<span class="token operator">::</span><span class="token function">__val_comp_iter</span><span class="token punctuation">(</span>__comp<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>_RandomAccessIterator __i <span class="token operator">=</span> __first <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> __i <span class="token operator">!=</span> __last<span class="token punctuation">;</span> <span class="token operator">++</span>__i<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">__comp</span><span class="token punctuation">(</span>__i<span class="token punctuation">,</span> __first<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// 特例，不满足__unguarded_linear_insert的前提条件</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token keyword">typename</span> <span class="token class-name">iterator_traits</span><span class="token operator">&lt;</span>_RandomAccessIterator<span class="token operator">></span><span class="token operator">::</span>value_type
+        __val <span class="token operator">=</span> <span class="token function">_GLIBCXX_MOVE</span><span class="token punctuation">(</span><span class="token operator">*</span>__i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//move</span>
+            <span class="token function">_GLIBCXX_MOVE_BACKWARD3</span><span class="token punctuation">(</span>__first<span class="token punctuation">,</span> __i<span class="token punctuation">,</span> __i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//copy_backward</span>
+            <span class="token operator">*</span>__first <span class="token operator">=</span> <span class="token function">_GLIBCXX_MOVE</span><span class="token punctuation">(</span>__val<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">&#125;</span>
+        <span class="token keyword">else</span>
+        std<span class="token operator">::</span><span class="token function">__unguarded_linear_insert</span><span class="token punctuation">(</span>__i<span class="token punctuation">,</span>
+                __gnu_cxx<span class="token operator">::</span>__ops<span class="token operator">::</span><span class="token function">__val_comp_iter</span><span class="token punctuation">(</span>__comp<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在<code>__insertion_sort</code> 中，如果 <code>__i</code> 比 已排序序列中的最小的数 <code>__i</code> 还小，则不满足<code>__unguarded_linear_insert</code>的前提条件。所以需要单独处理，将 <code>__i</code> 插到第一位，后面的元素整体后移一位。</p>
 <h4 id="final-insertion-sort-1"><a href="#final-insertion-sort-1" class="headerlink" title="__final_insertion_sort"></a><code>__final_insertion_sort</code></h4><p>了解了<code>__unguarded_linear_insert</code>的前提条件，<code>__final_insertion_sort</code> 就很好理解了</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">   __final_insertion_sort(_RandomAccessIterator __first,
-		   _RandomAccessIterator __last, _Compare __comp)
-   &#123;
-     if (__last - __first &gt; int(_S_threshold))
-&#123;
-  std::__insertion_sort(__first, __first + int(_S_threshold), __comp);
-  std::__unguarded_insertion_sort(__first + int(_S_threshold), __last,
-				  __comp);
-&#125;
-     else
-std::__insertion_sort(__first, __last, __comp);
-   &#125;
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">   <span class="token function">__final_insertion_sort</span><span class="token punctuation">(</span>_RandomAccessIterator __first<span class="token punctuation">,</span>
+		   _RandomAccessIterator __last<span class="token punctuation">,</span> _Compare __comp<span class="token punctuation">)</span>
+   <span class="token punctuation">&#123;</span>
+     <span class="token keyword">if</span> <span class="token punctuation">(</span>__last <span class="token operator">-</span> __first <span class="token operator">></span> <span class="token keyword">int</span><span class="token punctuation">(</span>_S_threshold<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  std<span class="token operator">::</span><span class="token function">__insertion_sort</span><span class="token punctuation">(</span>__first<span class="token punctuation">,</span> __first <span class="token operator">+</span> <span class="token keyword">int</span><span class="token punctuation">(</span>_S_threshold<span class="token punctuation">)</span><span class="token punctuation">,</span> __comp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  std<span class="token operator">::</span><span class="token function">__unguarded_insertion_sort</span><span class="token punctuation">(</span>__first <span class="token operator">+</span> <span class="token keyword">int</span><span class="token punctuation">(</span>_S_threshold<span class="token punctuation">)</span><span class="token punctuation">,</span> __last<span class="token punctuation">,</span>
+				  __comp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+     <span class="token keyword">else</span>
+std<span class="token operator">::</span><span class="token function">__insertion_sort</span><span class="token punctuation">(</span>__first<span class="token punctuation">,</span> __last<span class="token punctuation">,</span> __comp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在区间 &gt; 16时，先在[0, 16)上调用了 <code>__insertion_sort</code>；因为[0, 16)中的数可能是完全乱序的，完全不具备调用<code>__unguarded_linear_insert</code> 的前提条件，所以只能用 <code>__insertion_sort</code>。</p>
 <p>接着，在[16,  end) 处调用了 <code>__unguarded_insertion_sort</code>。由于经过了 <code>__introsort</code> 的数组是整体有序局部乱序的，即 16个一组的子数组内部是乱序的，但是不同子数组之间是有序的，即后一个子数组的最小值一定大于等于前一个子数组的最大值。这意味着[16,  end)中的所有数都 大于 [0, 16)中的任一个数。于是，[16, end)满足了 <code>__unguarded_insertion_sort</code> 的前提条件。</p>
