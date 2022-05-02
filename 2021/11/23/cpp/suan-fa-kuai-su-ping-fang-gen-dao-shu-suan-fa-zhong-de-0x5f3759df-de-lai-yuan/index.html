@@ -520,7 +520,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p><strong>平方根倒数速算法</strong>(Fast Inverse Square Root) [3]，是一个相当出名的算法，其具体作者已不可考，由于雷神之锤中大量使用了该种算法使得它为人所知。</p>
+                <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p><strong>平方根倒数速算法</strong> 即 Fast Inverse Square Root算法 [3]，是一个相当出名的算法，其具体作者已不可考，由于雷神之锤中大量使用了该种算法使得它为人所知。</p>
 <p>为什么需要平方根倒数而不是平方根本身？因为图形学中大量运算需要用到平方根倒数，而不需要平方根，比如 向量的<code>normalize()</code>操作 $\frac{1}{\sqrt{x^2 + y^2 + z^2}}(x,y,z)$ 就包含平方根倒数；而图形学中每一帧的渲染都至少需要调用上万次normalize。如果能加速平方根倒数的计算，那么渲染的速度将会大大提升。</p>
 <p>该算法诞生于20多年前，如今，该算法仅具有研究价值，但不具备使用价值[1]，CPU已经内置了速度更快，误差更小的指令；我们只需要使用 <code>1/sqrt(y)</code>。</p>
 <p>不过，这不影响我们去理解这个算法的精妙之处，在短短<strong>4行C代码</strong>里面，涉及了 1) IEEE 754标准 2) C 语言的undefined behavior 3) 牛顿迭代法。</p>
@@ -724,17 +724,17 @@ x_{t+1} &= \frac{3}{2}x_t - \frac{y}{2}x_t^3
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/11/23/cpp/suan-fa-kuai-su-ping-fang-gen-dao-shu-suan-fa-zhong-de-0x5f3759df-de-lai-yuan/">
+                <a href="/2022/05/03/test22-md/">
                     <div class="card-image">
                         
-                        <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/c++yellow1.png" class="responsive-img" alt="[算法] 平方根倒数速算法中的魔数0x5f3759df的来源">
                         
-                        <span class="card-title">[算法] 平方根倒数速算法中的魔数0x5f3759df的来源</span>
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="test22.md">
+                        
+                        <span class="card-title">test22.md</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -744,41 +744,16 @@ x_{t+1} &= \frac{3}{2}x_t - \frac{y}{2}x_t^3
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-23
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-03
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/C/" class="post-category">
-                                    C++
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            GeT Left
                             
                         </span>
                     </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
-                        <span class="chip bg-color">图形学</span>
-                    </a>
-                    
-                    <a href="/tags/C/">
-                        <span class="chip bg-color">C++</span>
-                    </a>
-                    
-                    <a href="/tags/IEEE-754/">
-                        <span class="chip bg-color">IEEE 754</span>
-                    </a>
-                    
-                    <a href="/tags/%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/">
-                        <span class="chip bg-color">牛顿迭代法</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -979,7 +954,7 @@ x_{t+1} &= \frac{3}{2}x_t - \frac{y}{2}x_t^3
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2021</span>
+                <span id="year">2019-2022</span>
             
             <span id="year">2019</span>
             <a href="/about" target="_blank">GeT Left</a>
