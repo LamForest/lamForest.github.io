@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="test22.md, GeT Left">
+    <meta name="keywords" content="[C++][标准库源码] sort ———— 性能极致的排序算法, GeT Left">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>test22.md | GeT Left</title>
+    <title>[C++][标准库源码] sort ———— 性能极致的排序算法 | GeT Left</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -323,12 +323,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://gitee.com/getleft/pics/raw/master/classnotes_2/c++yellow1.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">test22.md</h1>
+                    <h1 class="description center-align post-title">[C++][标准库源码] sort ———— 性能极致的排序算法</h1>
                 </div>
             </div>
         </div>
@@ -442,12 +442,37 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                                <span class="chip bg-color">图形学</span>
+                            </a>
+                        
+                            <a href="/tags/C/">
+                                <span class="chip bg-color">C++</span>
+                            </a>
+                        
+                            <a href="/tags/IEEE-754/">
+                                <span class="chip bg-color">IEEE 754</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/">
+                                <span class="chip bg-color">牛顿迭代法</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/C/" class="post-category">
+                                C++
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -456,7 +481,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-05-03
+                    2022-05-01
                 </div>
                 
 
@@ -470,14 +495,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    11
+                    2.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    8 分
                 </div>
                 
 
@@ -495,13 +520,147 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>123</p>
-<p>黄山一日游</p>
-<p>$1 + 2 = 3^2$</p>
-<blockquote>
-<p>123444</p>
-<hr>
+                <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><blockquote>
+<p><code>std::sort</code> 的实现基于 David Musser 1996年提出的一种混合式排序算法 Introspective Sorting，即IntroSort，其行为几乎与median-of-three QuickSort完全相同，但是当Partition有恶化的倾向时，能够自我侦测，转而改用HeapSort，使复杂度维持在HeapSort的 <code>O(NlonN)</code>。</p>
+<p>—— 侯捷《STL源码剖析》</p>
 </blockquote>
+<p>《STL源码剖析》这本书历史悠久，至今已有20年历史。不过20年时间在C++的历史长河中算不了什么。20年过去，GCC C++ STL 大部分算法、数据结构的实现和SGI STL基本相同。所以，侯捷20年前对于 <code>std::sort</code> 的描述依然适用，书中对  <code>std::sort</code> 源码的剖析依然准确。如果想从头了解 <code>std::sort</code> ，可以去看这本书；这里我的侧重点与《STL源码剖析》中不同，更关注一些细节和trick。</p>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><ol>
+<li><p>introsort，大体框架上遵循传统的快排算法，在极端情况下转为堆排序；<code>std::sort</code>在最后，会在整个数组上做一次插入排序。</p>
+</li>
+<li><p>introsort在GCC源码中涉及了两处 以<code>__unguarded__......</code> 为名的函数，它们的名字暗示了它们不会做越界检查，已达到更快的速度。本文特地分析了这两个函数，尤其是它们<strong>不做越界检查的情况下，如何避免越界</strong>。</p>
+</li>
+<li>在快排中 pivot的选择是一件non-trivial的事情，introsort选用了median-of-three方法，这又与一个 <code>__unguarded</code> 函数产生了联动。</li>
+<li>在源码中，插入排序有两种实现，它们有什么区别？</li>
+</ol>
+<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><p>所代码来自 <a target="_blank" rel="noopener" href="https://github.com/gcc-mirror/gcc/blob/releases/gcc-5/libstdc%2B%2B-v3/include/bits/stl_algo.h#L1956">gcc stl_algo.h</a>，建议搭配源码阅读。</p>
+<p><code>std::sort</code> 进行如下两步</p>
+<ol>
+<li><code>__introsort_loop(__first, __last, __lg(__last - __first) * 2)</code>; 第三个参数中的<code>__lg</code> 为 $log_2$，该参数用于控制快排的递归层数；例如，当数组长度为1024时，<code>__lg(1024) * 2</code>为 20，即最多递归20层。如果递归层数过深，那么很容易趋向最坏时间复杂度 $O(n^2)$。</li>
+<li><code>__final_insertion_sort(__first, __last)</code> ：对整个数组做一次插入排序。一般情况下，插入排序的复杂度为 $O(n^2)$。不过，由于 <code>__introsort_loop</code> 在区间不大于 16 时停止排序，此时，整个序列呈现<strong>整体有序，局部乱序</strong>的结果；也就是说，每个子序列里的数一定大于等于前一个子序列中任何数。在这种情况下，插入排序的时间复杂度并不高。</li>
+</ol>
+<h3 id="introsort-loop"><a href="#introsort-loop" class="headerlink" title="__introsort_loop"></a><code>__introsort_loop</code></h3><p>该函数和传统的QuickSort具有类似的框架，只是细节上有一些不同。</p>
+<p>如果区间长度大于 <code>S_threshold( = 16)</code>，则：</p>
+<ol>
+<li><p>如果<code>depth_limit == 0</code>，则转为堆排序 <code>__partial_sort</code>。</p>
+<p>这意味着尽管通过median-of-three选择了较优的pivot，但是左右子数组仍然不平衡，趋向于最坏复杂度 $O(N^2)$。这意味着快排在这个数组上不适用，于是转而使用堆排序。</p>
+</li>
+<li><p>调用<code>__unguarded_partition_pivot</code> ，进行<strong>choice of pivot</strong>和<strong>partition</strong>。</p>
+<ul>
+<li><p><strong>choice of pivot</strong>：快排的时间复杂度度与pivot的选择息息相关，最简单的办法是选择区间的第一个元素，但是，如果待排序数组为有序数组，那么时间复杂度会退化至 $O(N^2)$。其他方法包括 random pivot， median-of-three等。但是，选择Pivot的复杂度需要严格控制，过于复杂的规则会引入较高的overhead，反而导致时间复杂度升高。</p>
+<p>关于pivot的选择，是个经过了非常深入研究的问题，可以参考[1]，[1]表明random pivot的平均复杂度约为$1.385nlogn$ ，而median-of-three的复杂度约为 $1.188nlogn$。对于特别大的数组，ninther rule更适用，它是median-of-three的递归形式，尽管这引入了更大的overhead，但是对于足够大的数组，这一点overhead影响不大。</p>
+<p>gcc中使用的是”median-of-three“， </p>
+<blockquote>
+<p>median-of-three并不是完美的方法，[3]中构造了一种特别的数组针对该方法。</p>
+</blockquote>
+</li>
+<li><p><strong>Partition</strong>：Partition由<code>__unguarded_partition</code> 实现，</p>
+</li>
+</ul>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">while (true)
+	&#123;
+	  while (__comp(__first, __pivot)) &#x2F;&#x2F;不会判断 first &lt;&#x3D; last
+	    ++__first;
+	  --__last;
+	  while (__comp(__pivot, __last)) &#x2F;&#x2F;同上
+	    --__last;
+	  if (!(__first &lt; __last))
+	    return __first;
+	  std::iter_swap(__first, __last);
+	  ++__first;
+	&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>它的操作与一般的快排基本一致。唯一的区别是，循环时不会判断 <code>first &lt;= last</code>，但这并不会导致越界。</p>
+<p>这是因为之前使用了median-of-three，所以数组中至少有一个元素大于或等于pivot，所以 <code>while (__comp(__first, __pivot))</code>一定会在某个元素处停止，一定不会越界。这为代码减少了2处越界条件判断，略微提升了速度。</p>
+<blockquote>
+<p>经常会有这么一种bug，如果<code>__comp</code> 仿函数存在错误，可能会导致越界[2]，比如：</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">std::vector&lt;int&gt; values&#123;6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6&#125;;
+std::sort(values.begin(), values.end(), [](int v1, int v2)&#123;
+return v1 &gt;&#x3D; v2;
+&#125;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><a target="_blank" rel="noopener" href="https://onlinegdb.com/qVqxgESB8">试试看</a></p>
+<p>这就是__unguarded_partition不做越界检查导致的。</p>
+</blockquote>
+</li>
+</ol>
+<ol>
+<li><p>将右半部分进行<strong>递归</strong>，继续调用 <code>__introsort_loop</code>。</p>
+</li>
+<li><p>将左半部分进行<strong>循环</strong>。传统的快排中，会将左右部分分别进行递归快排，gcc中为了省去递归函数调用时所产生的开销，省去了左半部分的递归，改用循环处理。</p>
+<blockquote>
+<p>这种写法可读性较差，但效率并不比两次递归更好。—— 《STL源码剖析》</p>
+</blockquote>
+</li>
+</ol>
+<p>如果序列长度 <code>&lt;= 16</code>，则返回，等待最后的插入排序处理。因为快排对于小的数据量并不划算，快排产生的多次递归调用开销导致其速度甚至不如插入排序。</p>
+<h3 id="final-insertion-sort"><a href="#final-insertion-sort" class="headerlink" title="__final_insertion_sort"></a><code>__final_insertion_sort</code></h3><p>这个部分主要包含两个函数 <code>__insertion_sort</code> 和 <code>__unguarded_linear_sort</code>。</p>
+<p>他们都是插入排序，区别在于： </p>
+<ul>
+<li><code>__unguarded_linear_sort</code>需要传入的数组的前方存在一个较小或相等的值，像一个guard一样，阻止循环越界。</li>
+<li><code>__insertion_sort</code> 不需要任何要求，可以接受任何数组；</li>
+</ul>
+<h4 id="unguarded-linear-sort"><a href="#unguarded-linear-sort" class="headerlink" title="__unguarded_linear_sort"></a><code>__unguarded_linear_sort</code></h4><p>插入排序维护两个部分，已排序、未排序部分。它包含两重循环，每次外部循环将当前数插入到已排序部分合适的位置。</p>
+<p> <code>__unguarded_insertion_sort</code> 了实现外层循环，内层循环（即插入）调用了函数 <code>__unguarded_linear_insert</code>完成。</p>
+<ul>
+<li><p><code>__unguarded_linear_insert</code> 该函数用于寻找合适的位置并插入。它的核心代码如下：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"> <span class="token function">__unguarded_linear_insert</span><span class="token punctuation">(</span>_RandomAccessIterator __last<span class="token punctuation">,</span>
+	      _Compare __comp<span class="token punctuation">)</span>
+  <span class="token punctuation">&#123;</span>
+__val <span class="token operator">=</span> <span class="token function">_GLIBCXX_MOVE</span><span class="token punctuation">(</span><span class="token operator">*</span>__last<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   	 _RandomAccessIterator __next <span class="token operator">=</span> __last<span class="token punctuation">;</span>
+    	<span class="token operator">--</span>__next<span class="token punctuation">;</span>
+    	<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">__comp</span><span class="token punctuation">(</span>__val<span class="token punctuation">,</span> __next<span class="token punctuation">)</span> <span class="token comment">/* 缺少：&amp;&amp; __next >= __first */</span><span class="token punctuation">)</span> <span class="token comment">//可能越界</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token operator">*</span>__last <span class="token operator">=</span> <span class="token function">_GLIBCXX_MOVE</span><span class="token punctuation">(</span><span class="token operator">*</span>__next<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        __last <span class="token operator">=</span> __next<span class="token punctuation">;</span>
+        <span class="token operator">--</span>__next<span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    	<span class="token operator">*</span>__last <span class="token operator">=</span> <span class="token function">_GLIBCXX_MOVE</span><span class="token punctuation">(</span>__val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到，这个函数完全不关注 <code>__first</code>，根本不考虑 <code>__next</code> 是否可能越界  。所以，<code>__unguarded_linear_insert</code>的调用者需要<strong>保证</strong>，<code>__last</code>之前必须存在一个数小于等于 <code>*__last</code>，使得while循环终止。间接的，<code>__unguarded_linear_sort</code> 的调用者也需要保证这点。</p>
+</li>
+</ul>
+<h4 id="insertion-sort"><a href="#insertion-sort" class="headerlink" title="__insertion_sort"></a><code>__insertion_sort</code></h4><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">__insertion_sort</span><span class="token punctuation">(</span>_RandomAccessIterator __first<span class="token punctuation">,</span>
+   _RandomAccessIterator __last<span class="token punctuation">,</span> _Compare __comp<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>__first <span class="token operator">==</span> __last<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+
+      	<span class="token keyword">for</span> <span class="token punctuation">(</span>_RandomAccessIterator __i <span class="token operator">=</span> __first <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> __i <span class="token operator">!=</span> __last<span class="token punctuation">;</span> <span class="token operator">++</span>__i<span class="token punctuation">)</span>
+    	<span class="token punctuation">&#123;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">__comp</span><span class="token punctuation">(</span>__i<span class="token punctuation">,</span> __first<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// 特例，不满足__unguarded_linear_insert的前提条件</span>
+            <span class="token punctuation">&#123;</span>
+              <span class="token keyword">typename</span> <span class="token class-name">iterator_traits</span><span class="token operator">&lt;</span>_RandomAccessIterator<span class="token operator">></span><span class="token operator">::</span>value_type
+            __val <span class="token operator">=</span> <span class="token function">_GLIBCXX_MOVE</span><span class="token punctuation">(</span><span class="token operator">*</span>__i<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//move</span>
+              <span class="token function">_GLIBCXX_MOVE_BACKWARD3</span><span class="token punctuation">(</span>__first<span class="token punctuation">,</span> __i<span class="token punctuation">,</span> __i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//copy_backward</span>
+              <span class="token operator">*</span>__first <span class="token operator">=</span> <span class="token function">_GLIBCXX_MOVE</span><span class="token punctuation">(</span>__val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+          <span class="token keyword">else</span>
+            std<span class="token operator">::</span><span class="token function">__unguarded_linear_insert</span><span class="token punctuation">(</span>__i<span class="token punctuation">,</span>
+                    __gnu_cxx<span class="token operator">::</span>__ops<span class="token operator">::</span><span class="token function">__val_comp_iter</span><span class="token punctuation">(</span>__comp<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在<code>__insertion_sort</code> 中，如果 <code>__i</code> 比 已排序序列中的最小的数 <code>__i</code> 还小，则不满足<code>__unguarded_linear_insert</code>的前提条件。所以需要单独处理，将 <code>__i</code> 插到第一位，后面的元素整体后移一位。</p>
+<h4 id="final-insertion-sort-1"><a href="#final-insertion-sort-1" class="headerlink" title="__final_insertion_sort"></a><code>__final_insertion_sort</code></h4><p>了解了<code>__unguarded_linear_insert</code>的前提条件，<code>__final_insertion_sort</code> 就很好理解了</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">   __final_insertion_sort(_RandomAccessIterator __first,
+		   _RandomAccessIterator __last, _Compare __comp)
+   &#123;
+     if (__last - __first &gt; int(_S_threshold))
+&#123;
+  std::__insertion_sort(__first, __first + int(_S_threshold), __comp);
+  std::__unguarded_insertion_sort(__first + int(_S_threshold), __last,
+				  __comp);
+&#125;
+     else
+std::__insertion_sort(__first, __last, __comp);
+   &#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在区间 &gt; 16时，先在[0, 16)上调用了 <code>__insertion_sort</code>；因为[0, 16)中的数可能是完全乱序的，完全不具备调用<code>__unguarded_linear_insert</code> 的前提条件，所以只能用 <code>__insertion_sort</code>。</p>
+<p>接着，在[16,  end) 处调用了 <code>__unguarded_insertion_sort</code>。由于经过了 <code>__introsort</code> 的数组是整体有序局部乱序的，即 16个一组的子数组内部是乱序的，但是不同子数组之间是有序的，即后一个子数组的最小值一定大于等于前一个子数组的最大值。这意味着[16,  end)中的所有数都 大于 [0, 16)中的任一个数。于是，[16, end)满足了 <code>__unguarded_insertion_sort</code> 的前提条件。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] Bentley, Jon L.; McIlroy, M. Douglas (1993). <a target="_blank" rel="noopener" href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.14.8162">“Engineering a sort function”</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://blog.csdn.net/albertsh/article/details/119523587">https://blog.csdn.net/albertsh/article/details/119523587</a></p>
+<p>[3] <a target="_blank" rel="noopener" href="https://baobaobear.github.io/post/20191019-qsort-talk-3/">https://baobaobear.github.io/post/20191019-qsort-talk-3/</a></p>
+<p>[4] 更详细的_sort解读 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/circle/discuss/wItoZk/">https://leetcode-cn.com/circle/discuss/wItoZk/</a></p>
+<p>[5] 侯捷《STL源码剖析》</p>
 
                 
             </div>
@@ -528,7 +687,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2022/05/03/test22-md/">http://example.com/2022/05/03/test22-md/</a>
+                    <a href="http://example.com/2022/05/01/cpp/c-biao-zhun-ku-sort-xing-neng-ji-zhi-de-pai-xu-suan-fa/">http://example.com/2022/05/01/cpp/c-biao-zhun-ku-sort-xing-neng-ji-zhi-de-pai-xu-suan-fa/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -565,7 +724,23 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                                    <span class="chip bg-color">图形学</span>
+                                </a>
+                            
+                                <a href="/tags/C/">
+                                    <span class="chip bg-color">C++</span>
+                                </a>
+                            
+                                <a href="/tags/IEEE-754/">
+                                    <span class="chip bg-color">IEEE 754</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/">
+                                    <span class="chip bg-color">牛顿迭代法</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -612,34 +787,57 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2022/05/03/test22-md/">
+                <a href="/2022/05/01/cpp/c-biao-zhun-ku-sort-xing-neng-ji-zhi-de-pai-xu-suan-fa/">
                     <div class="card-image">
                         
+                        <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/c++yellow1.png" class="responsive-img" alt="[C++][标准库源码] sort ———— 性能极致的排序算法">
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="test22.md">
-                        
-                        <span class="card-title">test22.md</span>
+                        <span class="card-title">[C++][标准库源码] sort ———— 性能极致的排序算法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            Introsort, Pivot, 源码剖析, 快速排序,堆排序, 插入排序
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-01
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            GeT Left
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/C/" class="post-category">
+                                    C++
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">
+                        <span class="chip bg-color">图形学</span>
+                    </a>
+                    
+                    <a href="/tags/C/">
+                        <span class="chip bg-color">C++</span>
+                    </a>
+                    
+                    <a href="/tags/IEEE-754/">
+                        <span class="chip bg-color">IEEE 754</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/">
+                        <span class="chip bg-color">牛顿迭代法</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -827,6 +1025,13 @@
 
 </main>
 
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
 
 
 
