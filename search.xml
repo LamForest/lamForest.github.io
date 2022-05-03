@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>[噩耗] gitee图床用不了了</title>
+      <link href="2022/05/03/diary/e-hao-gitee-tu-chuang-yong-bu-liao/"/>
+      <url>2022/05/03/diary/e-hao-gitee-tu-chuang-yong-bu-liao/</url>
+      
+        <content type="html"><![CDATA[<p>原因：<a href="https://github.com/zhanghuid/picgo-plugin-gitee/issues/11">https://github.com/zhanghuid/picgo-plugin-gitee/issues/11</a><br>解决方法：<a href="https://zhuanlan.zhihu.com/p/138582151">https://zhuanlan.zhihu.com/p/138582151</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 新闻 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> gitee </tag>
+            
+            <tag> github </tag>
+            
+            <tag> Typora </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>[C++][标准库源码] sort ———— 性能极致的排序算法</title>
       <link href="2022/05/01/cpp/c-biao-zhun-ku-sort-xing-neng-ji-zhi-de-pai-xu-suan-fa/"/>
       <url>2022/05/01/cpp/c-biao-zhun-ku-sort-xing-neng-ji-zhi-de-pai-xu-suan-fa/</url>
