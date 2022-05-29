@@ -49,13 +49,36 @@
       
         <tags>
             
-            <tag> 图形学 </tag>
-            
             <tag> C++ </tag>
             
-            <tag> IEEE 754 </tag>
+            <tag> 快速排序 </tag>
             
-            <tag> 牛顿迭代法 </tag>
+            <tag> 堆排序 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>C++文章目录</title>
+      <link href="2022/04/12/cpp/c-mu-lu/"/>
+      <url>2022/04/12/cpp/c-mu-lu/</url>
+      
+        <content type="html"><![CDATA[<p><a href="https://zhuanlan.zhihu.com/p/261735714">知乎专栏 对象模型、STL容器、C++技巧</a>：目前有16篇C++相关文章。</p><h3 id="C-标准库"><a href="#C-标准库" class="headerlink" title="C++ 标准库"></a>C++ 标准库</h3><ol><li><a href="https://lamforest.github.io/2021/07/08/cpp/c-biao-zhun-ku-sui-ji-shu-de-sheng-cheng-fang-shi-xing-neng-dui-bi-mingw-de-wen-ti/">[C++][标准库] 随机数的生成方式、性能对比、mingw的问题</a></li><li><a href="https://lamforest.github.io/2021/04/29/cpp/wan-mei-zhuan-fa-yin-yong-zhe-die-wan-neng-yin-yong-std-forward/">[C++][标准库] 完美转发 = 引用折叠 + 万能引用 + std::forward</a></li><li><a href="https://lamforest.github.io/2022/05/01/cpp/c-biao-zhun-ku-sort-xing-neng-ji-zhi-de-pai-xu-suan-fa/">[C++][标准库源码] sort ———— 性能极致的排序算法</a></li></ol><h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ol><li><a href="https://lamforest.github.io/2021/11/23/cpp/suan-fa-kuai-su-ping-fang-gen-dao-shu-suan-fa-zhong-de-0x5f3759df-de-lai-yuan/">[算法] 平方根倒数速算法中的魔数0x5f3759df的来源</a></li></ol><h3 id=""><a href="#" class="headerlink" title=" "></a> </h3>]]></content>
+      
+      
+      <categories>
+          
+          <category> C++ </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
             
         </tags>
       
@@ -153,7 +176,7 @@
       <link href="2021/08/16/ml/qiang-hua-xue-xi-mu-lu/"/>
       <url>2021/08/16/ml/qiang-hua-xue-xi-mu-lu/</url>
       
-        <content type="html"><![CDATA[<h3 id="RL-An-Introduction-second-edition-by-Sutton-and-Barto-读书笔记"><a href="#RL-An-Introduction-second-edition-by-Sutton-and-Barto-读书笔记" class="headerlink" title="RL: An Introduction, second edition, by Sutton and Barto 读书笔记"></a>RL: An Introduction, second edition, by Sutton and Barto 读书笔记</h3><h3 id="论文笔记"><a href="#论文笔记" class="headerlink" title="论文笔记"></a>论文笔记</h3><ol><li><a href="https://lamforest.github.io/2021/08/10/ml/qiang-hua-xue-xi/paper/alphago/">[Nature 2016] AlphaGo: Deep RL 与 Tree Search 的成功结合</a></li><li><a href="https://lamforest.github.io/2021/08/16/ml/qiang-hua-xue-xi/paper/alphago-zero/">[Nature 2018] AlphaGo Zero: 无需监督学习的AlphaGo</a></li><li><a href="https://lamforest.github.io/2021/07/21/ml/qiang-hua-xue-xi/paper/dqn/">[Nature 2015] DQN论文笔记 及 实现</a></li><li><a href="https://lamforest.github.io/2021/07/28/ml/qiang-hua-xue-xi/paper/a3c/">[ICML 2016] A3C</a></li><li><a href="https://lamforest.github.io/2021/07/29/ml/qiang-hua-xue-xi/paper/prior-replay/">[ICLR 2016] Prioritized Experience Replay</a></li><li><a href="https://lamforest.github.io/2021/07/31/ml/qiang-hua-xue-xi/paper/double-dqn/">[AAAI 2016] Double DQN</a></li><li><a href="https://lamforest.github.io/2021/08/01/ml/qiang-hua-xue-xi/paper/dueling-dqn/">[ICML 2016] Dueling DQN</a></li><li><a href="https://lamforest.github.io/2021/08/02/ml/qiang-hua-xue-xi/paper/distributional-dqn/">[ICML 2017] Distributional RL</a></li><li><a href="https://lamforest.github.io/2021/08/05/ml/qiang-hua-xue-xi/paper/rainbow/">[AAAI 2018] Rainbow</a></li></ol><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><ol><li><a href="https://lamforest.github.io/2021/07/20/ml/qiang-hua-xue-xi/meng-te-qia-luo-sou-suo-shu/">[python] 在 tic-tac-toe 上实现 蒙特卡洛搜索树 MCTS 算法</a></li></ol>]]></content>
+        <content type="html"><![CDATA[<h3 id="论文笔记"><a href="#论文笔记" class="headerlink" title="论文笔记"></a>论文笔记</h3><ol><li><a href="https://lamforest.github.io/2021/08/10/ml/qiang-hua-xue-xi/paper/alphago/">[Nature 2016] AlphaGo: Deep RL 与 Tree Search 的成功结合</a></li><li><a href="https://lamforest.github.io/2021/08/16/ml/qiang-hua-xue-xi/paper/alphago-zero/">[Nature 2018] AlphaGo Zero: 无需监督学习的AlphaGo</a></li><li><a href="https://lamforest.github.io/2021/07/21/ml/qiang-hua-xue-xi/paper/dqn/">[Nature 2015] DQN论文笔记 及 实现</a></li><li><a href="https://lamforest.github.io/2021/07/28/ml/qiang-hua-xue-xi/paper/a3c/">[ICML 2016] A3C</a></li><li><a href="https://lamforest.github.io/2021/07/29/ml/qiang-hua-xue-xi/paper/prior-replay/">[ICLR 2016] Prioritized Experience Replay</a></li><li><a href="https://lamforest.github.io/2021/07/31/ml/qiang-hua-xue-xi/paper/double-dqn/">[AAAI 2016] Double DQN</a></li><li><a href="https://lamforest.github.io/2021/08/01/ml/qiang-hua-xue-xi/paper/dueling-dqn/">[ICML 2016] Dueling DQN</a></li><li><a href="https://lamforest.github.io/2021/08/02/ml/qiang-hua-xue-xi/paper/distributional-dqn/">[ICML 2017] Distributional RL</a></li><li><a href="https://lamforest.github.io/2021/08/05/ml/qiang-hua-xue-xi/paper/rainbow/">[AAAI 2018] Rainbow</a></li></ol><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><ol><li><a href="https://lamforest.github.io/2021/07/20/ml/qiang-hua-xue-xi/meng-te-qia-luo-sou-suo-shu/">[python] 在 tic-tac-toe 上实现 蒙特卡洛搜索树 MCTS 算法</a></li></ol><h3 id="RL-An-Introduction-second-edition-by-Sutton-and-Barto-读书笔记"><a href="#RL-An-Introduction-second-edition-by-Sutton-and-Barto-读书笔记" class="headerlink" title="RL: An Introduction, second edition, by Sutton and Barto 读书笔记"></a>RL: An Introduction, second edition, by Sutton and Barto 读书笔记</h3>]]></content>
       
       
       <categories>
@@ -520,31 +543,6 @@
     
     
     <entry>
-      <title>アークナイツ</title>
-      <link href="2021/05/26/others/ming-ri-fang-zhou-ji-lu/"/>
-      <url>2021/05/26/others/ming-ri-fang-zhou-ji-lu/</url>
-      
-        <content type="html"><![CDATA[<h3 id="5-23"><a href="#5-23" class="headerlink" title="5-23"></a>5-23</h3><p>新手池2抽，出了2次洁哥</p><p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210526135953342.png" alt="image-20210526135953342"></p><p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210526135937644.png" alt="image-20210526135937644"></p><p>联合池单抽了几次，出了温蒂（前期用不上，蛋疼）</p><p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210526140052834.png" alt="image-20210526140052834"></p><h3 id="5-24"><a href="#5-24" class="headerlink" title="5-24"></a>5-24</h3><p>第一次出资深、高级资深tag，竟然还是一起出的，只选了高级资深赌一把，没想到还是莫斯提马：</p><p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210526140229678.png" alt="image-20210526140229678"></p><p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210526140240185.png" alt="image-20210526140240185"></p><h3 id="5-25"><a href="#5-25" class="headerlink" title="5-25"></a>5-25</h3><p>没忍住，十抽了联合寻访，想出棘刺，却出了铃兰，也还行吧。。。就是不太用得上，赫墨也重复了</p><p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210526140356752.png" alt="image-20210526140356752"></p><h3 id="5-26"><a href="#5-26" class="headerlink" title="5-26"></a>5-26</h3><p>今天出了几个好tag，再梅尔和凛冬之间选了凛冬，希望不会后悔。</p><p>（忘记截图了）</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> アークナイツ </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> アークナイツ </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>GAMES202作业2旋转部分</title>
       <link href="2021/05/05/cg/games202-zuo-ye-2-xuan-zhuan-bu-fen/"/>
       <url>2021/05/05/cg/games202-zuo-ye-2-xuan-zhuan-bu-fen/</url>
@@ -593,31 +591,6 @@
             <tag> 图形学 </tag>
             
             <tag> PRT </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>胡适日记 2021年5月</title>
-      <link href="2021/05/01/diary/2021-nian-5-yue/"/>
-      <url>2021/05/01/diary/2021-nian-5-yue/</url>
-      
-        <content type="html"><![CDATA[<h3 id="5-1-5-7"><a href="#5-1-5-7" class="headerlink" title="5.1-5.7"></a>5.1-5.7</h3><h4 id="5-1"><a href="#5-1" class="headerlink" title="5.1"></a>5.1</h4><p>劳动节。学习了PRT。<br>对女朋友生了大气，对不起。</p><h4 id="5-2"><a href="#5-2" class="headerlink" title="5.2"></a>5.2</h4><p>完成了作业2的基础部分的大半（Light项预计算，Shadow和Unshadow的传输项预计算），还是比较容易的，会使用现成的函数就好了。明天要写JS了，想想就蛋疼。还了解到了Yan的黑历史，太牛了。</p><p>晚上吃了10个麦辣鸡翅，真好吃。</p><p>爸爸买了灭蚊灯，不知道效果怎么样，最近被咬的好惨。</p><p>决定在博客上写日记了，不过要好好藏起来</p><h4 id="5-11"><a href="#5-11" class="headerlink" title="5.11"></a>5.11</h4><p>今天看完了 101 P19 和 P20.这两个视频都是科普视频，光场相机，色彩空间，color matching，没啥意思，就是听听看。</p><p>接下来的学习路线是什么呢？</p><p>c++：<br>根据面经和知乎搜藏的查漏补缺</p><p>图形学：</p><ol><li>把当前欠的课补上</li><li>游戏引擎的课程 GAMES 201</li><li>经典论文看原文。哪些是经典的论文呢？大家都推荐的，以及引擎中会用到的一些常用算法</li><li>对于引擎中常用的算法，研究引擎的实现，有需要的时候可以自己实现一下</li><li>opengl的学习，这点暂时没头绪。 learnopengl还是从项目中学习。</li><li>小项目：选自己感兴趣的小项目做一下。比如101的课设</li><li>根据面经查漏补缺</li></ol><p>cv：</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 汇编 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 汇编 </tag>
             
         </tags>
       
