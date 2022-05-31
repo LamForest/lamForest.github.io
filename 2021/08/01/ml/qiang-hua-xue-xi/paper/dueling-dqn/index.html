@@ -484,7 +484,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-05-03
+                    2022-06-01
                 </div>
                 
 
@@ -524,7 +524,7 @@
 <li>对于一个state，可能其 $Q(s,a)$ 的绝对大小较大，但是 $Q(s,a_1), Q(s,a_2)…$ 之间的相差并不大，论文中以 game Seaquest举了例子。如果直接学习 $Q$ ，可能Q的绝对大小学的大差不差，但是 $Q(s,a_1), Q(s,a_2)…$ 之间的大小关系并不容易学习。所以这里将大小关系单独提出来进行学习（即 Advantage Branch）</li>
 </ol>
 <h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>Dueling Network的网络结构如下，两个branch分别预测 $V(s)$ 和 $A(s,a)$：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210806195520435.png" alt="image-20210806195520435"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210806195520435.png" alt="image-20210806195520435"></p>
 <p>回忆 Advantage 的定义：$A(s,a) = Q(s,a) - V(s)$，似乎可以将Dueling Q-network的output layer构造成两个branch的简单相加：</p>
 <script type="math/tex; mode=display">
 Q(s, a ; \theta, \alpha, \beta)=V(s ; \theta, \beta)+A(s, a ; \theta, \alpha)</script><p><em>（注： $\theta$ 为共享卷积层的参数， $\alpha $ 为 branch A的参数， $\beta$ 为 branch V 的参数）</em></p>
@@ -543,9 +543,9 @@ Q(s, a ; \theta, \alpha, \beta)=V(s ; \theta, \beta)+A(s, a ; \theta, \alpha)</s
 \end{aligned}</script><p>它与之前那个式子没有本质上的区别，仅仅是为了提高训练的稳定性 [1] 。</p>
 <h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Policy-Evaluation"><a href="#Policy-Evaluation" class="headerlink" title="Policy Evaluation"></a>Policy Evaluation</h3><p>Dueling DQN比DQN优越之处，就是在于 预测 $Q$ 比 single stream(DQN) 更准。 而如何比较谁的 $Q$ 更准，最直接的就是抛开 policy improvement， 比较谁的 Evaluation的结果更精确。</p>
 <p>于是作者在一个toy environment(corridor) 做了实验。Dueling Network预测的 $Q$ 与 true $Q$ 相差更小，且收敛更快。当 #action 变大时，这个现象更明显。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210806210647553.png" alt="image-20210806210647553"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210806210647553.png" alt="image-20210806210647553"></p>
 <h3 id="Atari"><a href="#Atari" class="headerlink" title="Atari"></a>Atari</h3><p>在Atari上的结果如下；</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210807032829811.png" alt="image-20210807032829811"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210807032829811.png" alt="image-20210807032829811"></p>
 <p>有几点值得注意的：</p>
 <ol>
 <li>We clip the gradients to have their norm less than or equal to 10. 这篇论文发现 gradient clip 尤其的有效。比如表中 Single vs Single Clip，有不小的提升，所以对于所有模型几乎都使用了 Clip。</li>

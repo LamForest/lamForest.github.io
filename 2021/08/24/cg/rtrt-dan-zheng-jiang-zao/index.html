@@ -484,7 +484,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-08-25
+                    2022-06-01
                 </div>
                 
 
@@ -523,7 +523,7 @@
 <li>Deferred Hybrid Ray Tracing 和 naive Path Tracing之间的区别</li>
 <li>论文Edge-Avoiding À-TrousWavelet Transform for fast Global Illumination Filtering 的</li>
 </ul>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824192654885.png" alt="Deferred Hybrid Real-Time Ray-Tracing Overview, 图源 [4]"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210824192654885.png" alt="Deferred Hybrid Real-Time Ray-Tracing Overview, 图源 [4]"></p>
 <h2 id="为什么需要降噪？"><a href="#为什么需要降噪？" class="headerlink" title="为什么需要降噪？"></a>为什么需要降噪？</h2><p>光线追踪的效果非常真实：</p>
 <p><img src="https://pic.vibaike.com/img/2020/08/bt-poj.jpg" alt="光线追踪一个例子"></p>
 <p><img src="https://mlhr8q6s8c91.i.optimole.com/VVLFqVU-3ep7C8ue/w:899/h:844/q:90/https://www.imaginationtech.com/wp-content/uploads/2017/01/hard-shadows-ray-tracing-raster.gif" alt="光追生成软阴影"></p>
@@ -534,21 +534,21 @@
 <p>就算是用GPU进行优化，也达不到实时(30fps)的要求。</p>
 <hr>
 <p>于是，实时光追采取的方案是：用较小的SPP（比如1SPP）迅速渲染出每一帧的带有大量噪点画面，然后利用单帧降噪（联合双边滤波）和多帧降噪（Temporal Accumulation）提升画面质量：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210529102937056.png" alt="image-20210529102937056"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/cs229/image-20210529102937056.png" alt="image-20210529102937056"></p>
 <p>这套Denoising方案可以得到比较不错的结果：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210529103156895.png" alt="image-20210529103156895"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/cs229/image-20210529103156895.png" alt="image-20210529103156895"></p>
 <h2 id="联合双边滤波"><a href="#联合双边滤波" class="headerlink" title="联合双边滤波"></a>联合双边滤波</h2><p>说到降噪，能想到最简单的方案之一就是高斯滤波，然而高斯滤波只是单纯的加权平均一块区域的像素值，在降噪的同时，也模糊了不同物体之间的边界：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210605102156200.png" alt="高斯模糊"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/cs229/image-20210605102156200.png" alt="高斯模糊"></p>
 <p>于是就有了<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9B%99%E9%82%8A%E6%BF%BE%E6%B3%A2%E5%99%A8">双边滤波</a>，不仅考虑两个像素之间的距离，还考虑了两个像素之间的颜色差。双边滤波假设：如果两个颜色之间的颜色差别较大，那他们就属于两个物体，那么，在滤波时不应该对彼此有贡献：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210605102708026.png" alt="双边滤波"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/cs229/image-20210605102708026.png" alt="双边滤波"></p>
 <p>然而，对于上面的图片，降噪结果貌似还可以；但是对于1SPP生成的实时光追图片，双边滤波的效果就不行了，因为噪点太多了，双边滤波的假设并不成立。</p>
 <hr>
 <p>观察高斯模糊和双边滤波，究其本质，是在用不同的度量（距离，颜色）来计算两个像素之间的相似性。但是由于实时光追的图片中大量噪声的存在，<strong>颜色这个度量本身是有噪声的</strong>，所以颜色并不是一个好的度量。</p>
 <p>那么有没有其他不带噪声的度量呢？有的，比如<strong>G-buffer</strong>中的Normal, Position(世界坐标系下的位置), Depth等等:</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824172516933.png" alt="场景"></p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824172108827.png" alt="Normal"></p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824172154024.png" alt="Position"></p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210605104116531.png" alt="image-20210605104116531"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210824172516933.png" alt="场景"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210824172108827.png" alt="Normal"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210824172154024.png" alt="Position"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/cs229/image-20210605104116531.png" alt="image-20210605104116531"></p>
 <p>假设我们的联合双边滤波考虑了像素之间的距离 $|\mathbf{i}-\mathbf{j}|^{2}$，像素之间颜色的差别 $|\widetilde{C}[\mathrm{i}]-\widetilde{C}[\mathrm{j}]|^{2}$ 和 法线方向的差别:</p>
 <script type="math/tex; mode=display">
 D_{\text {normal }}(\mathbf{i}, \mathbf{j})=\arccos (\text { Normal }[\mathbf{i}] \cdot \text { Normal }[\mathbf{j}])</script><p>那最终 $i,j$ 像素彼此之间的贡献值就是：</p>
@@ -612,9 +612,9 @@ for each pixel:
 <p>更多Deferred Shading的知识可以参考 [1] [2] [3]。</p>
 <h3 id="Hybrid-Rendering"><a href="#Hybrid-Rendering" class="headerlink" title="Hybrid Rendering"></a>Hybrid Rendering</h3><p><a target="_blank" rel="noopener" href="https://github.com/LamForest/GAMES101-Computer-Graphics-Assignment/blob/3fb956f2d16a3546e0b5bc23c4aeb2dd55d6ce72/Assignment7-Windows/Assignment7/Renderer.cpp#L70">Path Tracing算法</a>是一种纯粹的蒙塔卡罗光线追踪算法，和光栅化可以说是没有任何关系；但由上文可知，联合双边滤波降噪所需的G-Buffer是光栅化的产物，光线追踪中为什么又有光栅化呢？</p>
 <p>现在，为了尽量加快速度，工业界常用的算法并不是纯粹的光线追踪算法，而是一种混合了光栅化和光线追踪的算法，Hybrid Rendering。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/cs229/image-20210529102754498.png" alt="image-20210529102754498"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/cs229/image-20210529102754498.png" alt="image-20210529102754498"></p>
 <p>Hybrid Rendering 会先进行一遍光栅化得到G-buffer，再从G-buffer的每个像素出发，进行光线追踪，整个过程如下图所示：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210824192654885.png" alt="图源 [4]"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210824192654885.png" alt="图源 [4]"></p>
 <h2 id="Acknowledgement"><a href="#Acknowledgement" class="headerlink" title="Acknowledgement"></a>Acknowledgement</h2><p>这篇文章部分内容来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YK4y1T7yY?p=13">GAMES202 闫令琪</a> ，文中的部分截图来自于课中使用的幻灯片，非常感谢闫老师深入浅出的课程以及实现框架的助教们。</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://learnopengl-cn.readthedocs.io/zh/latest/05%20Advanced%20Lighting/08%20Deferred%20Shading/">learn opengl 延迟着色法</a></li>

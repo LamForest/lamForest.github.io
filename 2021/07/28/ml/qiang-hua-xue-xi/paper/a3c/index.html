@@ -480,7 +480,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-05-03
+                    2022-06-01
                 </div>
                 
 
@@ -534,9 +534,9 @@
 </ul>
 <p>有没有其他方法？</p>
 <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>这篇论文的基本想法在引子中提到了，这里不再重复。这种思想可以与很多RL算法结合，比如 Q-learning：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210722151323505.png" alt="image-20210722151323505"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210722151323505.png" alt="image-20210722151323505"></p>
 <p>还可以和 Actor-Critic结合，得到著名的A3C：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210722222151395.png" alt="image-20210722222151395"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210722222151395.png" alt="image-20210722222151395"></p>
 <ul>
 <li><p>这个算法和 Actor-Critic没区别，只是多了并行异步的部分。</p>
 </li>
@@ -552,11 +552,11 @@
 <h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Atari-2600-与Experience-Replay的对比"><a href="#Atari-2600-与Experience-Replay的对比" class="headerlink" title="Atari 2600: 与Experience Replay的对比"></a>Atari 2600: 与Experience Replay的对比</h3><p>与Experience Replay的对比分两部分。</p>
 <h4 id="1-收敛速度"><a href="#1-收敛速度" class="headerlink" title="1. 收敛速度"></a>1. 收敛速度</h4><p>A3C（在16 个CPU核上）比 DQN（K40）收敛更快。</p>
 <p>鉴于这篇文章想要challenge的是DQN中的Experience Replay，所以做了大量与DQN相关的对比实验。论文选取了5个Atari 2600中的游戏，比较DQN与这篇论文提出的算法的性能。明显看到，A3C的收敛速度要快很多：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210727012205577.png" alt="image-20210727012205577"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210727012205577.png" alt="image-20210727012205577"></p>
 <p><em>注：出于公平，A3C没有选DQN表现最差的游戏（可能A3C在这些游戏上表现也不好），比如 Breakout（打砖块）在DQN下面的结果也很好（不过不是最好的）。</em></p>
 <p><em>注：论文里没有比较A3C和 Prioritized DQN or Dueling D-DQN的收敛速度</em></p>
 <h4 id="2-Scores"><a href="#2-Scores" class="headerlink" title="2. Scores"></a>2. Scores</h4><p>不仅收敛速度 A3C更快，充分训练后的performance也是最好的：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210728185737820.png" alt="image-20210728185737820"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210728185737820.png" alt="image-20210728185737820"></p>
 <p>注：公平的对比是红框之间的对比，因为DQN没有用到LSTM，红框之间的网络结构是相同的。而<code>A3C,LSTM</code> 用到了LSTM。</p>
 <h3 id="更多实验：TORCS-MoJoCo-Labyrinth"><a href="#更多实验：TORCS-MoJoCo-Labyrinth" class="headerlink" title="更多实验：TORCS, MoJoCo, Labyrinth"></a>更多实验：TORCS, MoJoCo, Labyrinth</h3><p>论文中还做了一些其他实验，但是没有涉及和Experience Replay的比较，这里就略了。</p>
 <h3 id="Scalability"><a href="#Scalability" class="headerlink" title="Scalability"></a>Scalability</h3><p>这部分展现的是 线程个数对收敛速度的影响。</p>
@@ -565,9 +565,9 @@
 <p>We believe this is due to positive effect of multiple threads to reduce the bias in one-step methods.</p>
 </blockquote>
 <p>然后对于最有效的 A3C 来说，似乎没有这种效果（论文中似乎没有解释原因），但是加速比也很好了。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210726210743380.png" alt="image-20210726210743380"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210726210743380.png" alt="image-20210726210743380"></p>
 <h3 id="Robustness"><a href="#Robustness" class="headerlink" title="Robustness"></a>Robustness</h3><p>这里展现的是A3C对与learning rate和网络初始化方式不敏感，不需要特别细致的调参。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210727010725301.png" alt="image-20210727010725301"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210727010725301.png" alt="image-20210727010725301"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>这篇文章提出了一种比较泛用的算法框架，可以非常方便的与online RL算法做结合，并取得不错的效果。</p>
 <p>这篇文章提出的方法具有以下优点：</p>
 <ul>

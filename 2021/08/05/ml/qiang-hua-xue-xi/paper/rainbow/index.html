@@ -484,7 +484,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-05-03
+                    2022-06-01
                 </div>
                 
 
@@ -553,7 +553,7 @@ D_{\mathrm{KL}}\left(\Phi_{\boldsymbol{z}} d_{t}^{(n)} \| d_{t}\right)</script><
 <li><p>Priortized Experience Replay中样本被选中的概率正比于TD error $\delta = R + \gamma$  。在Distributional RL 的框架下， 样本被选中的概率正比于TD error $D_{KL}$。 因为，TD error和 $D_{\mathrm{KL}}$ 是等价的概念。</p>
 </li>
 <li><p>Dueling Network: 在 Distributional RL 的框架下， Dueling Network也只需要做一点小的改动。仍然是有个共享卷积 $\xi$， value branch $\eta$ 的输出维度从 1 变为 #atoms，而 advange branch $\psi$ 的输出维度从 #actions 变为  #actions x #atoms。输出层的构造方式仍然和 Dueling Network 中的一样。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210809220423770.png" alt="image-20210809220423770"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210809220423770.png" alt="image-20210809220423770"></p>
 </li>
 </ol>
 <ol>
@@ -562,11 +562,11 @@ D_{\mathrm{KL}}\left(\Phi_{\boldsymbol{z}} d_{t}^{(n)} \| d_{t}\right)</script><
 </ol>
 <p>至此， 6种 DQN的improvement 集于一身，得到了 <strong>Rainbow</strong>。</p>
 <h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h3 id="超参tuning"><a href="#超参tuning" class="headerlink" title="超参tuning"></a>超参tuning</h3><p>不同论文都会引入不同的超参，可以想象，Rainbow 的作者花了很多时间调参，也在论文中分享了一些经验，感兴趣的可以去看论文，这里展示作者的调参结果：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210810145722706.png" alt="红框为各种方法引入的超参，其他超参为DQN固有的"></p>
-<h3 id="Results-on-Atari"><a href="#Results-on-Atari" class="headerlink" title="Results on Atari"></a>Results on Atari</h3><p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210810151116823.png" alt="image-20210810151116823"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210810145722706.png" alt="红框为各种方法引入的超参，其他超参为DQN固有的"></p>
+<h3 id="Results-on-Atari"><a href="#Results-on-Atari" class="headerlink" title="Results on Atari"></a>Results on Atari</h3><p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210810151116823.png" alt="image-20210810151116823"></p>
 <h3 id="Ablation-study"><a href="#Ablation-study" class="headerlink" title="Ablation study"></a>Ablation study</h3><p>显而易见，将各种方法结合起来肯定会提高scores。但是，我们更感兴趣的是，哪种方法的提升更大？作者做了相关的Ablatioin Study，将每个方法分别从Rainbow中移除，观察移除后的scroes。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210810150654674.png" alt="image-20210810150654674"></p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210810150625637.png" alt="image-20210810150625637"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210810150654674.png" alt="image-20210810150654674"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210810150625637.png" alt="image-20210810150625637"></p>
 <p>从图上可以看出几点（更详细请看论文）：</p>
 <ol>
 <li>Prioritized replay，multi-step learning 的移除对结果影响最大。</li>

@@ -484,7 +484,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-05-03
+                    2022-06-01
                 </div>
                 
 
@@ -519,7 +519,7 @@
                 <p>论文：ICML 2017 A Distributional Perspective on Reinforcement Learning</p>
 <h2 id="引子-amp-Motivation"><a href="#引子-amp-Motivation" class="headerlink" title="引子 &amp; Motivation"></a>引子 &amp; Motivation</h2><p>Motivation &amp; idea: Approximate value distribution instead of expected return. </p>
 <p>然而，idea虽然简单，实现起来却并不容易。最简单的想法使用一个 高斯分布 对 $Q$ 建模，然而这其实与 approximate expected return区别不大。这篇文章采取的是另一种方法，这使得所拟合的分布不仅限于 单峰形态的概率分布函数（比如 高斯分布）：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210809193347237.png" alt="image-20210809193347237"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210809193347237.png" alt="image-20210809193347237"></p>
 <h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><p>略</p>
 <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h3 id="1-区间离散化"><a href="#1-区间离散化" class="headerlink" title="1. 区间离散化"></a>1. 区间离散化</h3><p>如何方便的建模任意的概率分布函数呢？作者使用了一个离散分布来建模：</p>
 <ol>
@@ -560,9 +560,9 @@ Q_{target}(s_t,a) = R + \gamma Q(s^{t+1}, a^*)</script><p>这篇论文中的targ
 -\sum_{i} m_{i} \log p_{i}\left(x_{t}, a_{t}\right)</script></li>
 </ol>
 <p>至此，得到最终的算法：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210809200918751.png" alt="image-20210809200918751"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210809200918751.png" alt="image-20210809200918751"></p>
 <p>附示意图一张：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210809201130640.png" alt="image-20210809201130640"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210809201130640.png" alt="image-20210809201130640"></p>
 <h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><p>待补充</p>
 <h2 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h2><p>待补充</p>
 

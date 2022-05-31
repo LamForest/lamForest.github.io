@@ -484,7 +484,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-05-03
+                    2022-06-01
                 </div>
                 
 
@@ -534,7 +534,7 @@ Y_{t}^{\mathrm{DQN}} \equiv R_{t+1}+\gamma \max _{a} Q\left(S_{t+1}, a ; \theta_
 <script type="math/tex; mode=display">
 Y_{t}^{\text {DoubleDQN }} \equiv R_{t+1}+\gamma Q_{target}\left(S_{t+1}, \underset{a}{\operatorname{argmax}} Q\left(S_{t+1}, a ; \boldsymbol{\theta}_{t}\right), \boldsymbol{\theta}_{t}^{-}\right)</script><p>Double DQN中，选择action由 $\theta_{t}$ 完成，计算Q由 $\theta_{t}^{-}$(target network) 完成。定期将  $\theta_{t}^{-}$拷贝到  $\theta_{t}^{-}$ 上， 不需要像 Double Q-learning那样交替更新。</p>
 <h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Double-DQN缓解了-Overestimation"><a href="#Double-DQN缓解了-Overestimation" class="headerlink" title="Double DQN缓解了 Overestimation"></a>Double DQN缓解了 Overestimation</h3><p>Double DQN选取了一些Atari中的游戏，与DQN做了对比，结果在下图中。这幅图清楚的展示了Double Q-learning的优点：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210806002030210.png" alt="image-20210806002030210"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210806002030210.png" alt="image-20210806002030210"></p>
 <p>这幅图有几点需要解释的：</p>
 <p>top row:</p>
 <ol>
@@ -552,11 +552,11 @@ Y_{t}^{\text {DoubleDQN }} \equiv R_{t+1}+\gamma Q_{target}\left(S_{t+1}, \under
 </ol>
 <h3 id="Double-DQN-提高了-scores"><a href="#Double-DQN-提高了-scores" class="headerlink" title="Double DQN 提高了 scores"></a>Double DQN 提高了 scores</h3><p>文中分了两小节说明 Double DQN在 Atari上 1）仅就score而言，表现比 DQN要好  2）在human start上，泛化能力也更强。</p>
 <h4 id="Part-1-Quality-of-the-learned-policies"><a href="#Part-1-Quality-of-the-learned-policies" class="headerlink" title="Part 1 Quality of the learned policies"></a>Part 1 Quality of the learned policies</h4><p>Part 1按照DQN的evaluton流程，starting point是通过no-op操作生成的，存在一定的随机性，但是随机性有限。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210806135502427.png" alt="image-20210806135502427"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210806135502427.png" alt="image-20210806135502427"></p>
 <p>（注：表中Double DQN所用的超参与DQN保持一致，并没有调过。）</p>
 <h4 id="Part-2-Robustness-to-Human-starts"><a href="#Part-2-Robustness-to-Human-starts" class="headerlink" title="Part 2 Robustness to Human starts"></a>Part 2 Robustness to Human starts</h4><p>Part 2  obtained 100 starting points sampled for each game from a human expert’s trajectory, as proposed by Nair et al. We start an evaluation episode from each of these starting points and run the emulator for up to 108,000 frames.</p>
 <p>与Part 1相比，Part 2 的starting points更为随机，更考验模型的<strong>泛化能力</strong>。实验结果也佐证了这一点，DQN、Double DQN均有下滑。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210806140402258.png" alt="image-20210806140402258"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210806140402258.png" alt="image-20210806140402258"></p>
 <p>（注：表中Double DQN所用的超参与DQN保持一致，并没有调过。而Double DQN(tuned) 经过了仔细调参）</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] [AAAI 2018] Rainbow: Combining Improvements in Deep Reinforcement Learning<br>[2] ICML 2017 A Distributional Perspective on Reinforcement Learning</p>
 

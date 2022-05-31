@@ -484,7 +484,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-05-03
+                    2022-06-01
                 </div>
                 
 
@@ -517,7 +517,7 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="前置知识-UCB"><a href="#前置知识-UCB" class="headerlink" title="前置知识 UCB"></a>前置知识 UCB</h2><p>强化学习的核心问题之一是 探索&amp;利用 问题。最简单的解决方法是 $\epsilon-greedy$ 。 UCB是比 $\epsilon-greedy$  稍微复杂一点的方法，对于UCB而言，其选择下一个动作的方式为：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210716180827344.png" alt=""></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210716180827344.png" alt=""></p>
 <blockquote>
 <p> 注意到，不同于 $\epsilon-greedy$ 会产生一个概率分布，然后用 <code>np.random.choice</code> 从其中sample一个动作；UCB是determinstic的，每次选择的动作都是确定的。</p>
 </blockquote>
@@ -533,7 +533,7 @@
 <p>以tic-tac-toe为例，人（下图中的h）走先手。</p>
 <p>对于左子结点，$ucb = Q_t(a) + c \sqrt{\frac{\ln t}{N_t(a)}} = 1 + \sqrt2 \sqrt{\frac{\ln 2}{1}} \approx 2.18$ </p>
 <p>对于右子结点而言，$ucb = Q_t(a) + c \sqrt{\frac{\ln t}{N_t(a)}} = -1 + \sqrt2 \sqrt{\frac{\ln 2}{1}} \approx 0.18$</p>
-<p> <img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210716182648833.png" alt="image-20210716182648833"></p>
+<p> <img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210716182648833.png" alt="image-20210716182648833"></p>
 <h2 id="MCTS算法"><a href="#MCTS算法" class="headerlink" title="MCTS算法"></a>MCTS算法</h2><p>MCTS分为 selection，expansion，simulation，backup。</p>
 <p>我在tic-tac-toe上实现了MCTS，该实现参考了<a target="_blank" rel="noopener" href="http://www.incompleteideas.net/609%20dropbox/other%20readings%20and%20resources/MCTS-survey.pdf">A Survey of Monte Carlo Tree Search Methods</a> 中的算法，代码见 <a target="_blank" rel="noopener" href="https://github.com/LamForest/machine-learning-reimplementation">github (仍在整理中)</a> 。</p>
 <p>在开始叙述MCTS算法之前，先明确几点:</p>
@@ -542,20 +542,20 @@
 <li>MCTS的数据结构是一颗树，树的每一个结点是一个state，边代表动作，子结点是父结点的afterstate，根结点是智能体当前所处的state。</li>
 <li>对于井字棋，$Q$ 的意义是选择这个action之后，赢的平均概率。</li>
 </ul>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210720185116147.png" alt="MCTS 概念图 From Sutton Book 8.1"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210720185116147.png" alt="MCTS 概念图 From Sutton Book 8.1"></p>
 <h3 id="Selection"><a href="#Selection" class="headerlink" title="Selection"></a>Selection</h3><p>selection：通过Tree-Policy从树中选择一个结点进行expansion。</p>
 <p>这里的Tree-Policy选择的是前置知识中的UCB：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210720191801324.png" alt="image-20210720191801324"></p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210720191814652.png" alt="image-20210720191814652"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210720191801324.png" alt="image-20210720191801324"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210720191814652.png" alt="image-20210720191814652"></p>
 <p>（这里的 $Q$ 指的是累计奖赏，不是平均奖赏，不过区别不大）</p>
 <h4 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h4><p>在下图中，人走了第一步，现在agent需要做MCTS走第二步。</p>
 <p>在第11次蒙特卡洛时，由于根结点Fully Expanded了，所以选择UCB最大的，即第一个子结点。该子结点是not fully expanded的，所以选择该子结点（下图中红色的结点）</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210716183014526.png" alt="image-20210716183014526"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210716183014526.png" alt="image-20210716183014526"></p>
 <h3 id="Expansion"><a href="#Expansion" class="headerlink" title="Expansion"></a>Expansion</h3><p>Expansion：对于selection选中的结点，生成它的一个子结点，如果有多个可能子结点，随机选择一个。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210720192255614.png" alt="image-20210720192255614"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210720192255614.png" alt="image-20210720192255614"></p>
 <p>（这一步没什么好说的，单纯的new一个结点）</p>
 <h3 id="Simulation"><a href="#Simulation" class="headerlink" title="Simulation"></a>Simulation</h3><p>Simulation：以生成的子结点 $v^{\prime}$ 为起点，利用Rollout Policy（也叫 Default Policy）选择动作，并进入下一个结点，直到达到终止状态，得到reward。对于tic-tac-toe，reward为 -1，0，1。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210720192621210.png" alt="image-20210720192621210"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210720192621210.png" alt="image-20210720192621210"></p>
 <ul>
 <li>Simulation 与 Selection都用了Policy，但是Simulation使用的是 更简单的Policy，比如均匀随机选择一个动作。</li>
 </ul>
@@ -565,25 +565,25 @@
 <li>$N(v)$：状态 $v$ 被backup的总次数。</li>
 <li>$Q(v)$：从 $v$ 出发，获得的累计总奖赏。</li>
 </ul>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210720193046997.png" alt="image-20210720193046997"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210720193046997.png" alt="image-20210720193046997"></p>
 <p>这里特别注意的是，对于tic-tac-toe这种两人游戏，假设根结点处在第1层，那么奇数层是站在智能体的角度，偶数层站在对手的角度。当站在智能体的角度，reward不需要修改；当站在对手的角度，<code>reward = - reward</code>。这里实现的时候要小心。</p>
 <h3 id="决策"><a href="#决策" class="headerlink" title="决策"></a>决策</h3><p>在利用蒙特卡洛模拟学习出了 $Q$ 之后，接着要选择一个动作，选择的方式可以有很多种，这里还是根据UCB的值来选择，选择UCB最大的那个action。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210720195140305.png" alt="image-20210720195140305"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210720195140305.png" alt="image-20210720195140305"></p>
 <h2 id="MCTS玩tic-tac-toe"><a href="#MCTS玩tic-tac-toe" class="headerlink" title="MCTS玩tic-tac-toe"></a>MCTS玩tic-tac-toe</h2><p>下面分别在人走先手和agent走先手的情况下，演示了我实现的MCTS：</p>
-<h3 id="人走先手"><a href="#人走先手" class="headerlink" title="人走先手"></a>人走先手</h3><p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210720194609634.png" alt="image-20210720194609634"></p>
+<h3 id="人走先手"><a href="#人走先手" class="headerlink" title="人走先手"></a>人走先手</h3><p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210720194609634.png" alt="image-20210720194609634"></p>
 <p>最后打成了平局。</p>
-<h3 id="MCTS-Agent走先手"><a href="#MCTS-Agent走先手" class="headerlink" title="MCTS Agent走先手"></a>MCTS Agent走先手</h3><p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210720194737508.png" alt=""></p>
+<h3 id="MCTS-Agent走先手"><a href="#MCTS-Agent走先手" class="headerlink" title="MCTS Agent走先手"></a>MCTS Agent走先手</h3><p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210720194737508.png" alt=""></p>
 <p>MCTS Agent赢了（人放了点水）</p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="迭代次数的影响"><a href="#迭代次数的影响" class="headerlink" title="迭代次数的影响"></a>迭代次数的影响</h3><p>本以为对于tic-tac-toe这样简单的游戏，迭代次数不需要特别大，然而似乎并不是这样，当迭代次数分别为1000，5000，10000时，MCTS给出的最佳走法有概率不一致。</p>
 <p>（我检查了好几遍我的代码，没找到问题所在，不知道是我的实现问题，还是MCTS的缺陷）</p>
 <p>比如，当Human走先手，下了这一步棋之后：</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210717213614947.png" alt="image-20210717213614947"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210717213614947.png" alt="image-20210717213614947"></p>
 <p>现在MCTS需要计算这个state下，最优的下法，当MCTS的迭代次数为1000时，重复100次MCTS算法，MCTS有 77次选择中间这一步，23次选择其他位置。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210717214259384.png" alt="image-20210717214259384"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210717214259384.png" alt="image-20210717214259384"></p>
 <p>当迭代次数为 5000 的时候， MCTS有97次选择中间这一步，3次选择其他位置。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210717214425183.png" alt="image-20210717214425183"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210717214425183.png" alt="image-20210717214425183"></p>
 <p>当迭代次数为 10000 的时候， MCTS有99次选择中间这一步，1次选择其他位置。</p>
-<p><img src="https://gitee.com/getleft/pics/raw/master/classnotes_2/image-20210718033026438.png" alt="image-20210718033026438"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/LamForest/pics@main/gitee/classnotes_2/image-20210718033026438.png" alt="image-20210718033026438"></p>
 
                 
             </div>
